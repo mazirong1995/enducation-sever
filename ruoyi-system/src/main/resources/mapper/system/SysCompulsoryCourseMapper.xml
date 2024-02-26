@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCompulsoryCourseMapper">
+    
+    <resultMap type="SysCompulsoryCourse" id="SysCompulsoryCourseResult">
+        <result property="id"    column="id"    />
+        <result property="ccName"    column="cc_name"    />
+        <result property="ccTeacher"    column="cc_teacher"    />
+        <result property="ccDuration"    column="cc_duration"    />
+        <result property="ccStartTime"    column="cc_start_time"    />
+        <result property="ccEndTime"    column="cc_end_time"    />
+        <result property="ccCheckTime"    column="cc_check_time"    />
+        <result property="ccFlag"    column="cc_flag"    />
+        <result property="ccRemark"    column="cc_remark"    />
+    </resultMap>
+
+    <sql id="selectSysCompulsoryCourseVo">
+        select id, cc_name, cc_teacher, cc_duration, cc_start_time, cc_end_time, cc_check_time, cc_flag, cc_remark from sys_compulsory_course
+    </sql>
+
+    <select id="selectSysCompulsoryCourseList" parameterType="SysCompulsoryCourse" resultMap="SysCompulsoryCourseResult">
+        <include refid="selectSysCompulsoryCourseVo"/>
+        <where>  
+            <if test="ccName != null "> and cc_name like concat('%', #{ccName}, '%')</if>
+            <if test="ccTeacher != null  and ccTeacher != ''"> and cc_teacher = #{ccTeacher}</if>
+            <if test="ccDuration != null  and ccDuration != ''"> and cc_duration = #{ccDuration}</if>
+            <if test="ccStartTime != null  and ccStartTime != ''"> and cc_start_time = #{ccStartTime}</if>
+            <if test="ccEndTime != null  and ccEndTime != ''"> and cc_end_time = #{ccEndTime}</if>
+            <if test="ccCheckTime != null  and ccCheckTime != ''"> and cc_check_time = #{ccCheckTime}</if>
+            <if test="ccFlag != null  and ccFlag != ''"> and cc_flag = #{ccFlag}</if>
+            <if test="ccRemark != null  and ccRemark != ''"> and cc_remark = #{ccRemark}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCompulsoryCourseById" parameterType="Long" resultMap="SysCompulsoryCourseResult">
+        <include refid="selectSysCompulsoryCourseVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getPullDown" parameterType="Long" resultType="map">
+       SELECT
+            a.user_id as userId,
+            CONCAT( a.nick_name, '(', b.dept_name, ')' ) AS userName
+        FROM
+            sys_user a
+            LEFT JOIN sys_dept b ON a.dept_id = b.dept_id
+        WHERE
+            a.dept_id IS NOT NULL
+        <if test="uesrId != null"> and a.user_id = #{uesrId}</if>
+
+    </select>
+        
+    <insert id="insertSysCompulsoryCourse" parameterType="SysCompulsoryCourse" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_compulsory_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ccName != null">cc_name,</if>
+            <if test="ccTeacher != null">cc_teacher,</if>
+            <if test="ccDuration != null">cc_duration,</if>
+            <if test="ccStartTime != null">cc_start_time,</if>
+            <if test="ccEndTime != null">cc_end_time,</if>
+            <if test="ccCheckTime != null">cc_check_time,</if>
+            <if test="ccFlag != null">cc_flag,</if>
+            <if test="ccRemark != null">cc_remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ccName != null">#{ccName},</if>
+            <if test="ccTeacher != null">#{ccTeacher},</if>
+            <if test="ccDuration != null">#{ccDuration},</if>
+            <if test="ccStartTime != null">#{ccStartTime},</if>
+            <if test="ccEndTime != null">#{ccEndTime},</if>
+            <if test="ccCheckTime != null">#{ccCheckTime},</if>
+            <if test="ccFlag != null">#{ccFlag},</if>
+            <if test="ccRemark != null">#{ccRemark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCompulsoryCourse" parameterType="SysCompulsoryCourse">
+        update sys_compulsory_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ccName != null">cc_name = #{ccName},</if>
+            <if test="ccTeacher != null">cc_teacher = #{ccTeacher},</if>
+            <if test="ccDuration != null">cc_duration = #{ccDuration},</if>
+            <if test="ccStartTime != null">cc_start_time = #{ccStartTime},</if>
+            <if test="ccEndTime != null">cc_end_time = #{ccEndTime},</if>
+            <if test="ccCheckTime != null">cc_check_time = #{ccCheckTime},</if>
+            <if test="ccFlag != null">cc_flag = #{ccFlag},</if>
+            <if test="ccRemark != null">cc_remark = #{ccRemark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCompulsoryCourseById" parameterType="Long">
+        delete from sys_compulsory_course where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCompulsoryCourseByIds" parameterType="String">
+        delete from sys_compulsory_course where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

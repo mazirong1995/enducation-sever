@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCompulsoryCourseDetailMapper">
+    
+    <resultMap type="SysCompulsoryCourseDetail" id="SysCompulsoryCourseDetailResult">
+        <result property="id"    column="id"    />
+        <result property="ccId"    column="cc_id"    />
+        <result property="ccdName"    column="ccd_name"    />
+        <result property="ccdDataPath"    column="ccd_data_path"    />
+        <result property="ccdRemark"    column="ccd_remark"    />
+    </resultMap>
+
+    <sql id="selectSysCompulsoryCourseDetailVo">
+        select id, cc_id, ccd_name, ccd_data_path, ccd_remark from sys_compulsory_course_detail
+    </sql>
+
+    <select id="selectSysCompulsoryCourseDetailList" parameterType="SysCompulsoryCourseDetail" resultMap="SysCompulsoryCourseDetailResult">
+        <include refid="selectSysCompulsoryCourseDetailVo"/>
+        <where>  
+            <if test="ccId != null "> and cc_id = #{ccId}</if>
+            <if test="ccdName != null  and ccdName != ''"> and ccd_name like concat('%', #{ccdName}, '%')</if>
+            <if test="ccdDataPath != null  and ccdDataPath != ''"> and ccd_data_path = #{ccdDataPath}</if>
+            <if test="ccdRemark != null  and ccdRemark != ''"> and ccd_remark = #{ccdRemark}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCompulsoryCourseDetailById" parameterType="Long" resultMap="SysCompulsoryCourseDetailResult">
+        <include refid="selectSysCompulsoryCourseDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_compulsory_course_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">cc_id,</if>
+            <if test="ccdName != null">ccd_name,</if>
+            <if test="ccdDataPath != null">ccd_data_path,</if>
+            <if test="ccdRemark != null">ccd_remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">#{ccId},</if>
+            <if test="ccdName != null">#{ccdName},</if>
+            <if test="ccdDataPath != null">#{ccdDataPath},</if>
+            <if test="ccdRemark != null">#{ccdRemark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail">
+        update sys_compulsory_course_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ccId != null">cc_id = #{ccId},</if>
+            <if test="ccdName != null">ccd_name = #{ccdName},</if>
+            <if test="ccdDataPath != null">ccd_data_path = #{ccdDataPath},</if>
+            <if test="ccdRemark != null">ccd_remark = #{ccdRemark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCompulsoryCourseDetailById" parameterType="Long">
+        delete from sys_compulsory_course_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCompulsoryCourseDetailByIds" parameterType="String">
+        delete from sys_compulsory_course_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

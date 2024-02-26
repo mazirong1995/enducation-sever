@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCcAnswerMapper">
+    
+    <resultMap type="SysCcAnswer" id="SysCcAnswerResult">
+        <result property="id"    column="id"    />
+        <result property="ccId"    column="cc_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="teaId"    column="tea_id"    />
+        <result property="anPath"    column="an_path"    />
+        <result property="anGrade"    column="an_grade"    />
+        <result property="anRemark"    column="an_remark"    />
+    </resultMap>
+
+    <sql id="selectSysCcAnswerVo">
+        select id, cc_id, stu_id, tea_id, an_path, an_grade, an_remark from sys_cc_answer
+    </sql>
+
+    <select id="selectSysCcAnswerList" parameterType="SysCcAnswer" resultMap="SysCcAnswerResult">
+        <include refid="selectSysCcAnswerVo"/>
+        <where>  
+            <if test="ccId != null "> and cc_id = #{ccId}</if>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="teaId != null "> and tea_id = #{teaId}</if>
+            <if test="anPath != null  and anPath != ''"> and an_path = #{anPath}</if>
+            <if test="anGrade != null  and anGrade != ''"> and an_grade = #{anGrade}</if>
+            <if test="anRemark != null  and anRemark != ''"> and an_remark = #{anRemark}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCcAnswerById" parameterType="Long" resultMap="SysCcAnswerResult">
+        <include refid="selectSysCcAnswerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysCcAnswer" parameterType="SysCcAnswer" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_cc_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">cc_id,</if>
+            <if test="stuId != null">stu_id,</if>
+            <if test="teaId != null">tea_id,</if>
+            <if test="anPath != null">an_path,</if>
+            <if test="anGrade != null">an_grade,</if>
+            <if test="anRemark != null">an_remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">#{ccId},</if>
+            <if test="stuId != null">#{stuId},</if>
+            <if test="teaId != null">#{teaId},</if>
+            <if test="anPath != null">#{anPath},</if>
+            <if test="anGrade != null">#{anGrade},</if>
+            <if test="anRemark != null">#{anRemark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCcAnswer" parameterType="SysCcAnswer">
+        update sys_cc_answer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ccId != null">cc_id = #{ccId},</if>
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="teaId != null">tea_id = #{teaId},</if>
+            <if test="anPath != null">an_path = #{anPath},</if>
+            <if test="anGrade != null">an_grade = #{anGrade},</if>
+            <if test="anRemark != null">an_remark = #{anRemark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCcAnswerById" parameterType="Long">
+        delete from sys_cc_answer where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCcAnswerByIds" parameterType="String">
+        delete from sys_cc_answer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
