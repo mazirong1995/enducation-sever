@@ -70,10 +70,10 @@ public class SysCompulsoryCourseController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping("/list2")
     public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse) {
-        //根据学生id查询教师id，查询相关课程id
+        //根据学生id查询同一年级的教师id，查询相关课程id
         List<String> courseIds = sysCompulsoryCourseService.getCourseIds(SecurityUtils.getUserId());
         startPage();
-        sysCompulsoryCourse.setCcFlag("1");
+        //sysCompulsoryCourse.setCcFlag("1");
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourses(courseIds);
         return getDataTable(list);
     }

@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ccId != null "> and a.cc_id = #{ccId}</if>
             <if test="flag != null "> and b.cc_flag = #{flag}</if>
         </where>
+        order by a.cc_id,a.ccd_name
     </select>
 
     <select id="selectSysCompulsoryCourseDetailById" parameterType="Long" resultMap="SysCompulsoryCourseDetailResult">
@@ -36,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="flag != null "> and a.cc_flag = #{flag}</if>
         </where>
+        order by a.cc_remark
     </select>
 
     <select id="getStuCourses" parameterType = 'Long' resultType="map">

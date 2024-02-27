@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,6 @@ public class SysCcStuController extends BaseController
 
     /**
      * 查询学生自己选课列表
-     * todo 传参用户id
      */
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @GetMapping("/list1")
@@ -98,6 +98,29 @@ public class SysCcStuController extends BaseController
     public AjaxResult add(@RequestBody SysCcStu sysCcStu)
     {
         return toAjax(sysCcStuService.insertSysCcStu(sysCcStu));
+    }
+
+    /**
+     * 新增学生选课
+     */
+    @PreAuthorize("@ss.hasPermi('system:stu:edit')")
+    @Log(title = "学生选课", businessType = BusinessType.INSERT)
+    @PostMapping("/add1")
+    public AjaxResult add1(@RequestBody JSONObject jsonObject)
+    {
+        SysCcStu sysCcStu = new SysCcStu();
+        //获取当前登录人的id
+        Long userId = SecurityUtils.getUserId();
+        sysCcStu.setStuId(userId);
+        List<SysCcStu> sysCcStus = sysCcStuService.selectSysCcStuList(sysCcStu);
+        if(sysCcStus.size()>0){
+            sysCcStu.setId(sysCcStus.get(0).getId());
+            sysCcStu.setCcIds(jsonObject.getJSONArray("ccIds").toString());
+            return toAjax(sysCcStuService.updateSysCcStu(sysCcStu));
+        }else{
+            sysCcStu.setCcIds(jsonObject.getJSONArray("ccIds").toString());
+            return toAjax(sysCcStuService.insertSysCcStu(sysCcStu));
+        }
     }
 
     /**

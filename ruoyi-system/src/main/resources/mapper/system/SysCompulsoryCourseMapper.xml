@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ccFlag != null  and ccFlag != ''"> and cc_flag = #{ccFlag}</if>
             <if test="ccRemark != null  and ccRemark != ''"> and cc_remark = #{ccRemark}</if>
         </where>
+        order by cc_remark
     </select>
 
     <select id="selectSysCompulsoryCourseById" parameterType="Long" resultMap="SysCompulsoryCourseResult">
@@ -55,11 +56,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                  </foreach>
              </if>
          </where>
+         order by cc_remark
     </select>
 
     <select id="getPullDown" parameterType="Long" resultType="map">
        SELECT
-            a.user_id as userId,
+            a.user_id as ccTeacher,
             CONCAT( a.nick_name, '(', b.dept_name, ')' ) AS userName
         FROM
             sys_user a
@@ -68,23 +70,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.dept_id IS NOT NULL
             and a.flag = '1'
         <if test="uesrId != null"> and a.user_id = #{uesrId}</if>
-
+         order by a.dept_id
     </select>
 
     <select id="getCourseIds" parameterType="Long" resultType="String">
-        SELECT
-            c.id AS couserId
-        FROM
+        select
+            c.id as couserId
+        from
             sys_compulsory_course c
-        WHERE
-            c.cc_teacher IN (
-            SELECT
-                b.user_id AS userId
-            FROM
+        where
+            c.cc_teacher in (
+            select
+                b.user_id as userId
+            from
                 sys_user b
-            WHERE
-            b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{uesrId} LIMIT 1 )
-            AND b.flag = '1')
+            where
+                b.dept_id in (
+                select
+                    c.dept_id
+                from
+                    sys_dept c
+                where
+                    c.parent_id = (
+                    select
+                        b.parent_id
+                    from
+                        sys_dept b
+                    where
+                        b.dept_id = (
+                        select
+                            a.dept_id
+                        from
+                            sys_user a
+                        where
+                            a.user_id = #{uesrId}
+                        limit 1 ))
+                )
+                and b.flag = '1')
+
 
     </select>
 

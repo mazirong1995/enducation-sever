@@ -76,8 +76,8 @@ public class SysCompulsoryCourseDetailController extends BaseController
         Map<String,Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
         startPage();
         List<SysCompulsoryCourseDetail> list = new ArrayList<>();
-        Object ccIds = result.get("ccIds");
-        if (ccIds != null ){
+        if (result != null ){
+            Object ccIds = result.get("ccIds");
             String s = String.valueOf(ccIds);
             String[] split = s.split(",");
             list = sysCompulsoryCourseDetailService.list2(Arrays.asList(split));
@@ -104,6 +104,17 @@ public class SysCompulsoryCourseDetailController extends BaseController
     public AjaxResult pullDownCourse1()
     {
         List<Map<String,Object>> result = sysCompulsoryCourseDetailService.pullDownCourse("1");
+        return success(result);
+    }
+
+    /**
+     * 查询全部课程下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/pullDownCourse2")
+    public AjaxResult pullDownCourse2()
+    {
+        List<Map<String,Object>> result = sysCompulsoryCourseDetailService.pullDownCourse(null);
         return success(result);
     }
 
