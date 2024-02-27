@@ -24,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 课程Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -149,9 +149,10 @@ public class SysCompulsoryCourseController extends BaseController
      * 课程教师下拉
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
-    @GetMapping(value = {"/pullDown/","/pullDown/{uesrId}"})
+    @GetMapping(value = {"/pullDown"})
     public AjaxResult getPullDown(@PathVariable(value = "userId", required = false) Long uesrId)
     {
+        Long userId = getLoginUser().getUserId();
         List<Map<String,Object>> result = sysCompulsoryCourseService.getPullDown(uesrId);
         return success(result);
     }
