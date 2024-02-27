@@ -3,6 +3,8 @@ package com.ruoyi.system.controller;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,7 +71,7 @@ public class SysCompulsoryCourseController extends BaseController
     public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse)
     {
         //根据学生id查询教师id，查询相关课程id
-        List<String> courseIds = sysCompulsoryCourseService.getCourseIds(sysCompulsoryCourse.getUserId());
+        List<String> courseIds = sysCompulsoryCourseService.getCourseIds(SecurityUtils.getUserId());
         startPage();
         sysCompulsoryCourse.setCcFlag("1");
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourses(courseIds);

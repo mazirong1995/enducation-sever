@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 学生选课对象 sys_cc_stu
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -26,40 +26,30 @@ public class SysCcStu extends BaseEntity
     @Excel(name = "课程数组")
     private String ccIds;
 
-    private Long userId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setStuId(Long stuId) 
+    public void setStuId(Long stuId)
     {
         this.stuId = stuId;
     }
 
-    public Long getStuId() 
+    public Long getStuId()
     {
         return stuId;
     }
-    public void setCcIds(String ccIds) 
+    public void setCcIds(String ccIds)
     {
         this.ccIds = ccIds;
     }
 
-    public String getCcIds() 
+    public String getCcIds()
     {
         return ccIds;
     }

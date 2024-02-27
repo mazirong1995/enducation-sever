@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 课程对象 sys_compulsory_course
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -50,94 +50,84 @@ public class SysCompulsoryCourse extends BaseEntity
     @Excel(name = "备注")
     private String ccRemark;
 
-    private Long userId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setCcName(Long ccName) 
+    public void setCcName(Long ccName)
     {
         this.ccName = ccName;
     }
 
-    public Long getCcName() 
+    public Long getCcName()
     {
         return ccName;
     }
-    public void setCcTeacher(String ccTeacher) 
+    public void setCcTeacher(String ccTeacher)
     {
         this.ccTeacher = ccTeacher;
     }
 
-    public String getCcTeacher() 
+    public String getCcTeacher()
     {
         return ccTeacher;
     }
-    public void setCcDuration(String ccDuration) 
+    public void setCcDuration(String ccDuration)
     {
         this.ccDuration = ccDuration;
     }
 
-    public String getCcDuration() 
+    public String getCcDuration()
     {
         return ccDuration;
     }
-    public void setCcStartTime(String ccStartTime) 
+    public void setCcStartTime(String ccStartTime)
     {
         this.ccStartTime = ccStartTime;
     }
 
-    public String getCcStartTime() 
+    public String getCcStartTime()
     {
         return ccStartTime;
     }
-    public void setCcEndTime(String ccEndTime) 
+    public void setCcEndTime(String ccEndTime)
     {
         this.ccEndTime = ccEndTime;
     }
 
-    public String getCcEndTime() 
+    public String getCcEndTime()
     {
         return ccEndTime;
     }
-    public void setCcCheckTime(String ccCheckTime) 
+    public void setCcCheckTime(String ccCheckTime)
     {
         this.ccCheckTime = ccCheckTime;
     }
 
-    public String getCcCheckTime() 
+    public String getCcCheckTime()
     {
         return ccCheckTime;
     }
-    public void setCcFlag(String ccFlag) 
+    public void setCcFlag(String ccFlag)
     {
         this.ccFlag = ccFlag;
     }
 
-    public String getCcFlag() 
+    public String getCcFlag()
     {
         return ccFlag;
     }
-    public void setCcRemark(String ccRemark) 
+    public void setCcRemark(String ccRemark)
     {
         this.ccRemark = ccRemark;
     }
 
-    public String getCcRemark() 
+    public String getCcRemark()
     {
         return ccRemark;
     }

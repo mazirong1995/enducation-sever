@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysCcStuMapper;
@@ -9,19 +11,19 @@ import com.ruoyi.system.service.ISysCcStuService;
 
 /**
  * 学生选课Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
 @Service
-public class SysCcStuServiceImpl implements ISysCcStuService 
+public class SysCcStuServiceImpl implements ISysCcStuService
 {
     @Autowired
     private SysCcStuMapper sysCcStuMapper;
 
     /**
      * 查询学生选课
-     * 
+     *
      * @param id 学生选课主键
      * @return 学生选课
      */
@@ -33,7 +35,7 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 
     /**
      * 查询学生选课列表
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 学生选课
      */
@@ -45,7 +47,7 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 
     /**
      * 新增学生选课
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 结果
      */
@@ -66,7 +68,7 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 
     /**
      * 修改学生选课
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 结果
      */
@@ -78,7 +80,7 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 
     /**
      * 批量删除学生选课
-     * 
+     *
      * @param ids 需要删除的学生选课主键
      * @return 结果
      */
@@ -90,7 +92,7 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 
     /**
      * 删除学生选课信息
-     * 
+     *
      * @param id 学生选课主键
      * @return 结果
      */
@@ -101,8 +103,8 @@ public class SysCcStuServiceImpl implements ISysCcStuService
     }
 
     @Override
-    public List<String> getStuIds(SysCcStu sysCcStu) {
-        return sysCcStuMapper.getStuIds(String.valueOf(sysCcStu.getUserId()));
+    public List<String> getStuIds() {
+        return sysCcStuMapper.getStuIds(SecurityUtils.getUserId());
     }
 
     @Override

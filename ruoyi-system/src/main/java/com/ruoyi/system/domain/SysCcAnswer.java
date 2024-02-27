@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 课程考试答案库对象 sys_cc_answer
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -42,76 +42,66 @@ public class SysCcAnswer extends BaseEntity
     @Excel(name = "备注")
     private String anRemark;
 
-    private Long userId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setCcId(Long ccId) 
+    public void setCcId(Long ccId)
     {
         this.ccId = ccId;
     }
 
-    public Long getCcId() 
+    public Long getCcId()
     {
         return ccId;
     }
-    public void setStuId(Long stuId) 
+    public void setStuId(Long stuId)
     {
         this.stuId = stuId;
     }
 
-    public Long getStuId() 
+    public Long getStuId()
     {
         return stuId;
     }
-    public void setTeaId(Long teaId) 
+    public void setTeaId(Long teaId)
     {
         this.teaId = teaId;
     }
 
-    public Long getTeaId() 
+    public Long getTeaId()
     {
         return teaId;
     }
-    public void setAnPath(String anPath) 
+    public void setAnPath(String anPath)
     {
         this.anPath = anPath;
     }
 
-    public String getAnPath() 
+    public String getAnPath()
     {
         return anPath;
     }
-    public void setAnGrade(String anGrade) 
+    public void setAnGrade(String anGrade)
     {
         this.anGrade = anGrade;
     }
 
-    public String getAnGrade() 
+    public String getAnGrade()
     {
         return anGrade;
     }
-    public void setAnRemark(String anRemark) 
+    public void setAnRemark(String anRemark)
     {
         this.anRemark = anRemark;
     }
 
-    public String getAnRemark() 
+    public String getAnRemark()
     {
         return anRemark;
     }

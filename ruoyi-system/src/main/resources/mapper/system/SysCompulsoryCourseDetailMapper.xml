@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysCompulsoryCourseDetailMapper">
-    
+
     <resultMap type="SysCompulsoryCourseDetail" id="SysCompulsoryCourseDetailResult">
         <result property="id"    column="id"    />
         <result property="ccId"    column="cc_id"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="flag != null "> and b.cc_flag = #{flag}</if>
         </where>
     </select>
-    
+
     <select id="selectSysCompulsoryCourseDetailById" parameterType="Long" resultMap="SysCompulsoryCourseDetailResult">
         <include refid="selectSysCompulsoryCourseDetailVo"/>
         where id = #{id}
@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="getStuCourses" parameterType = 'String' resultType="map">
+    <select id="getStuCourses" parameterType = 'Long' resultType="map">
        select a.cc_ids as ccIds from sys_cc_stu a where a.stu_id = #{userId} limit 1
     </select>
 
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSysCompulsoryCourseDetailByIds" parameterType="String">
-        delete from sys_compulsory_course_detail where id in 
+        delete from sys_compulsory_course_detail where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

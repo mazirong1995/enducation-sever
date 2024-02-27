@@ -3,6 +3,8 @@ package com.ruoyi.system.controller;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 学生选课Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -44,7 +46,7 @@ public class SysCcStuController extends BaseController
     public TableDataInfo list(SysCcStu sysCcStu)
     {
         //教师查询同一班级下的学生id
-        List<String> stuIds = sysCcStuService.getStuIds(sysCcStu);
+        List<String> stuIds = sysCcStuService.getStuIds();
         startPage();
         List<SysCcStu> list = sysCcStuService.selectSysCcStuData(stuIds);
         return getDataTable(list);
@@ -58,7 +60,7 @@ public class SysCcStuController extends BaseController
     @GetMapping("/list1")
     public TableDataInfo list1(SysCcStu sysCcStu)
     {
-        sysCcStu.setStuId(sysCcStu.getUserId());
+        sysCcStu.setStuId(SecurityUtils.getUserId());
         startPage();
         List<SysCcStu> list = sysCcStuService.selectSysCcStuList(sysCcStu);
         return getDataTable(list);

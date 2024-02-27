@@ -6,15 +6,15 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 学生选课Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
-public interface SysCcStuMapper 
+public interface SysCcStuMapper
 {
     /**
      * 查询学生选课
-     * 
+     *
      * @param id 学生选课主键
      * @return 学生选课
      */
@@ -22,7 +22,7 @@ public interface SysCcStuMapper
 
     /**
      * 查询学生选课列表
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 学生选课集合
      */
@@ -30,7 +30,7 @@ public interface SysCcStuMapper
 
     /**
      * 新增学生选课
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 结果
      */
@@ -38,7 +38,7 @@ public interface SysCcStuMapper
 
     /**
      * 修改学生选课
-     * 
+     *
      * @param sysCcStu 学生选课
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface SysCcStuMapper
 
     /**
      * 删除学生选课
-     * 
+     *
      * @param id 学生选课主键
      * @return 结果
      */
@@ -54,13 +54,13 @@ public interface SysCcStuMapper
 
     /**
      * 批量删除学生选课
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
     public int deleteSysCcStuByIds(Long[] ids);
 
-    List<String> getStuIds(@Param("userId") String userId);
+    List<String> getStuIds(@Param("userId") Long userId);
 
     List<SysCcStu> selectSysCcStuData(@Param("stuIds") List<String> stuIds);
 }

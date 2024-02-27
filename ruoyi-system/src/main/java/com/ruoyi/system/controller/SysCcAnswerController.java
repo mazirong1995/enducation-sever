@@ -2,6 +2,8 @@ package com.ruoyi.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,7 +90,7 @@ public class SysCcAnswerController extends BaseController
     @PostMapping("/stuAnswer")
     public AjaxResult add1(@RequestBody SysCcAnswer sysCcAnswer)
     {
-        sysCcAnswer.setStuId(sysCcAnswer.getUserId());
+        sysCcAnswer.setStuId(SecurityUtils.getUserId());
         return toAjax(sysCcAnswerService.insertSysCcAnswer(sysCcAnswer));
     }
 
@@ -101,7 +103,7 @@ public class SysCcAnswerController extends BaseController
     public AjaxResult edit(@RequestBody SysCcAnswer sysCcAnswer)
     {
         SysCcAnswer sysCcAnswer1 = sysCcAnswerService.selectSysCcAnswerById(sysCcAnswer.getId());
-        sysCcAnswer1.setTeaId(sysCcAnswer.getUserId());
+        sysCcAnswer1.setTeaId(SecurityUtils.getUserId());
         sysCcAnswer1.setAnGrade(sysCcAnswer.getAnGrade());
         sysCcAnswer1.setAnRemark(sysCcAnswer.getAnRemark());
         return toAjax(sysCcAnswerService.updateSysCcAnswer(sysCcAnswer1));

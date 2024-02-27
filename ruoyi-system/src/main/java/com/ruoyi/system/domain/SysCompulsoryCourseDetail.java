@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 课程详情对象 sys_compulsory_course_detail
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -38,16 +38,6 @@ public class SysCompulsoryCourseDetail extends BaseEntity
 
     private String ccName;
 
-    private String userId;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getFlag() {
         return flag;
     }
@@ -69,43 +59,43 @@ public class SysCompulsoryCourseDetail extends BaseEntity
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setCcId(Long ccId) 
+    public void setCcId(Long ccId)
     {
         this.ccId = ccId;
     }
 
-    public Long getCcId() 
+    public Long getCcId()
     {
         return ccId;
     }
-    public void setCcdName(String ccdName) 
+    public void setCcdName(String ccdName)
     {
         this.ccdName = ccdName;
     }
 
-    public String getCcdName() 
+    public String getCcdName()
     {
         return ccdName;
     }
-    public void setCcdDataPath(String ccdDataPath) 
+    public void setCcdDataPath(String ccdDataPath)
     {
         this.ccdDataPath = ccdDataPath;
     }
 
-    public String getCcdDataPath() 
+    public String getCcdDataPath()
     {
         return ccdDataPath;
     }
-    public void setCcdRemark(String ccdRemark) 
+    public void setCcdRemark(String ccdRemark)
     {
         this.ccdRemark = ccdRemark;
     }
 
-    public String getCcdRemark() 
+    public String getCcdRemark()
     {
         return ccdRemark;
     }

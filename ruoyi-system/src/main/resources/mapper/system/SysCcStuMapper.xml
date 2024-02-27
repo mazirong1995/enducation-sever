@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysCcStuMapper">
-    
+
     <resultMap type="SysCcStu" id="SysCcStuResult">
         <result property="id"    column="id"    />
         <result property="stuId"    column="stu_id"    />
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSysCcStuList" parameterType="SysCcStu" resultMap="SysCcStuResult">
         <include refid="selectSysCcStuVo"/>
-        <where>  
+        <where>
             <if test="stuId != null "> and stu_id = #{stuId}</if>
             <if test="ccIds != null  and ccIds != ''"> and cc_ids = #{ccIds}</if>
         </where>
@@ -31,13 +31,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </foreach>
         </where>
     </select>
-    
+
     <select id="selectSysCcStuById" parameterType="Long" resultMap="SysCcStuResult">
         <include refid="selectSysCcStuVo"/>
         where id = #{id}
     </select>
 
-    <select id="getStuIds" parameterType="String" resultType="String">
+    <select id="getStuIds" parameterType="Long" resultType="String">
         SELECT
             b.user_id AS userId
         FROM
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
             AND b.flag = '2'
     </select>
-        
+
     <insert id="insertSysCcStu" parameterType="SysCcStu" useGeneratedKeys="true" keyProperty="id">
         insert into sys_cc_stu
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSysCcStuByIds" parameterType="String">
-        delete from sys_cc_stu where id in 
+        delete from sys_cc_stu where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

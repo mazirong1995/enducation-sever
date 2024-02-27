@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 课程详情Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -72,7 +74,7 @@ public class SysCompulsoryCourseDetailController extends BaseController
     public TableDataInfo list2(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
     {
         //根据学生id，查询已经选的课程
-        Map<String,Object> result = sysCompulsoryCourseDetailService.getStuCourses(sysCompulsoryCourseDetail.getUserId());
+        Map<String,Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
         startPage();
         List<SysCompulsoryCourseDetail> list = new ArrayList<>();
         Object ccIds = result.get("ccIds");

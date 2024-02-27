@@ -11,19 +11,19 @@ import com.ruoyi.system.service.ISysCompulsoryCourseDetailService;
 
 /**
  * 课程详情Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
 @Service
-public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCourseDetailService 
+public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCourseDetailService
 {
     @Autowired
     private SysCompulsoryCourseDetailMapper sysCompulsoryCourseDetailMapper;
 
     /**
      * 查询课程详情
-     * 
+     *
      * @param id 课程详情主键
      * @return 课程详情
      */
@@ -35,7 +35,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     /**
      * 查询课程详情列表
-     * 
+     *
      * @param sysCompulsoryCourseDetail 课程详情
      * @return 课程详情
      */
@@ -47,7 +47,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     /**
      * 新增课程详情
-     * 
+     *
      * @param sysCompulsoryCourseDetail 课程详情
      * @return 结果
      */
@@ -59,7 +59,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     /**
      * 修改课程详情
-     * 
+     *
      * @param sysCompulsoryCourseDetail 课程详情
      * @return 结果
      */
@@ -71,7 +71,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     /**
      * 批量删除课程详情
-     * 
+     *
      * @param ids 需要删除的课程详情主键
      * @return 结果
      */
@@ -83,7 +83,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     /**
      * 删除课程详情信息
-     * 
+     *
      * @param id 课程详情主键
      * @return 结果
      */
@@ -104,7 +104,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     }
 
     @Override
-    public Map<String, Object> getStuCourses(String userId) {
+    public Map<String, Object> getStuCourses(Long userId) {
         return sysCompulsoryCourseDetailMapper.getStuCourses(userId);
     }
 }
