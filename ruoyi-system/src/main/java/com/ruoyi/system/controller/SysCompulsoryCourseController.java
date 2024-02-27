@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,18 +34,18 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/course")
-public class SysCompulsoryCourseController extends BaseController
-{
+public class SysCompulsoryCourseController extends BaseController {
     @Autowired
     private ISysCompulsoryCourseService sysCompulsoryCourseService;
+    @Autowired
+    private ISysUserService sysUserService;
 
     /**
      * 查询必修课程列表
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping("/list")
-    public TableDataInfo list(SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public TableDataInfo list(SysCompulsoryCourse sysCompulsoryCourse) {
         startPage();
         sysCompulsoryCourse.setCcFlag("0");
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourseList(sysCompulsoryCourse);
@@ -55,8 +57,7 @@ public class SysCompulsoryCourseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping("/list1")
-    public TableDataInfo list1(SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public TableDataInfo list1(SysCompulsoryCourse sysCompulsoryCourse) {
         startPage();
         sysCompulsoryCourse.setCcFlag("1");
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourseList(sysCompulsoryCourse);
@@ -68,8 +69,7 @@ public class SysCompulsoryCourseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping("/list2")
-    public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse) {
         //根据学生id查询教师id，查询相关课程id
         List<String> courseIds = sysCompulsoryCourseService.getCourseIds(SecurityUtils.getUserId());
         startPage();
@@ -84,8 +84,7 @@ public class SysCompulsoryCourseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @Log(title = "课程", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public void export(HttpServletResponse response, SysCompulsoryCourse sysCompulsoryCourse) {
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourseList(sysCompulsoryCourse);
         ExcelUtil<SysCompulsoryCourse> util = new ExcelUtil<SysCompulsoryCourse>(SysCompulsoryCourse.class);
         util.exportExcel(response, list, "课程数据");
@@ -96,8 +95,7 @@ public class SysCompulsoryCourseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(sysCompulsoryCourseService.selectSysCompulsoryCourseById(id));
     }
 
@@ -107,8 +105,7 @@ public class SysCompulsoryCourseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:course:edit')")
     @Log(title = "课程", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public AjaxResult add(@RequestBody SysCompulsoryCourse sysCompulsoryCourse) {
         sysCompulsoryCourse.setCcFlag("0");
         return toAjax(sysCompulsoryCourseService.insertSysCompulsoryCourse(sysCompulsoryCourse));
     }
@@ -119,8 +116,7 @@ public class SysCompulsoryCourseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:course:edit')")
     @Log(title = "课程", businessType = BusinessType.INSERT)
     @PostMapping("/add1")
-    public AjaxResult add1(@RequestBody SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public AjaxResult add1(@RequestBody SysCompulsoryCourse sysCompulsoryCourse) {
         sysCompulsoryCourse.setCcFlag("1");
         return toAjax(sysCompulsoryCourseService.insertSysCompulsoryCourse(sysCompulsoryCourse));
     }
@@ -131,8 +127,7 @@ public class SysCompulsoryCourseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:course:edit')")
     @Log(title = "课程", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysCompulsoryCourse sysCompulsoryCourse)
-    {
+    public AjaxResult edit(@RequestBody SysCompulsoryCourse sysCompulsoryCourse) {
         return toAjax(sysCompulsoryCourseService.updateSysCompulsoryCourse(sysCompulsoryCourse));
     }
 
@@ -141,9 +136,8 @@ public class SysCompulsoryCourseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:course:edit')")
     @Log(title = "课程", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(sysCompulsoryCourseService.deleteSysCompulsoryCourseByIds(ids));
     }
 
@@ -152,10 +146,11 @@ public class SysCompulsoryCourseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping(value = {"/pullDown"})
-    public AjaxResult getPullDown(@PathVariable(value = "userId", required = false) Long uesrId)
-    {
+    public AjaxResult getPullDown() {
         Long userId = getLoginUser().getUserId();
-        List<Map<String,Object>> result = sysCompulsoryCourseService.getPullDown(uesrId);
+        SysUser sysUser = sysUserService.selectUserById(userId);
+        if(sysUser.getFlag()!="1")userId=null;
+        List<Map<String, Object>> result = sysCompulsoryCourseService.getPullDown(userId);
         return success(result);
     }
 }

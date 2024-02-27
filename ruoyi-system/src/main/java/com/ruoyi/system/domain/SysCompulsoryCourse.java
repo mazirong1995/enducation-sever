@@ -20,11 +20,23 @@ public class SysCompulsoryCourse extends BaseEntity
 
     /** 课程名称 */
     @Excel(name = "课程名称")
-    private Long ccName;
+    private String ccName;
 
     /** 课程教师id */
     @Excel(name = "课程教师id")
     private String ccTeacher;
+
+    /** 课程教师id */
+    @Excel(name = "课程教师id")
+    private String ccTeacherName;
+
+    public String getCcTeacherName() {
+        return ccTeacherName;
+    }
+
+    public void setCcTeacherName(String ccTeacherName) {
+        this.ccTeacherName = ccTeacherName;
+    }
 
     /** 课程时长 */
     @Excel(name = "课程时长")
@@ -59,12 +71,12 @@ public class SysCompulsoryCourse extends BaseEntity
     {
         return id;
     }
-    public void setCcName(Long ccName)
+    public void setCcName(String ccName)
     {
         this.ccName = ccName;
     }
 
-    public Long getCcName()
+    public String getCcName()
     {
         return ccName;
     }

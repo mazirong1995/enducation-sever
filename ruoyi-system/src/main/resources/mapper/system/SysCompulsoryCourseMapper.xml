@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="ccName"    column="cc_name"    />
         <result property="ccTeacher"    column="cc_teacher"    />
+        <result property="ccTeacherName"    column="ccTeacherName"    />
         <result property="ccDuration"    column="cc_duration"    />
         <result property="ccStartTime"    column="cc_start_time"    />
         <result property="ccEndTime"    column="cc_end_time"    />
@@ -17,7 +18,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysCompulsoryCourseVo">
-        select id, cc_name, cc_teacher, cc_duration, cc_start_time, cc_end_time, cc_check_time, cc_flag, cc_remark from sys_compulsory_course
+        select id, cc_name, cc_teacher,(select su.nick_name from sys_user su where su.user_id =cc_teacher) as ccTeacherName,
+        cc_duration,
+        date_format(cc_start_time,'%Y-%m-%d %H:%I:%s') as cc_start_time,
+        date_format(cc_end_time,'%Y-%m-%d %H:%I:%s') as cc_end_time,
+        date_format(cc_check_time,'%Y-%m-%d %H:%I:%s') as cc_check_time,
+         cc_flag, cc_remark from sys_compulsory_course
     </sql>
 
     <select id="selectSysCompulsoryCourseList" parameterType="SysCompulsoryCourse" resultMap="SysCompulsoryCourseResult">
@@ -26,8 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ccName != null "> and cc_name like concat('%', #{ccName}, '%')</if>
             <if test="ccTeacher != null  and ccTeacher != ''"> and cc_teacher = #{ccTeacher}</if>
             <if test="ccDuration != null  and ccDuration != ''"> and cc_duration = #{ccDuration}</if>
-            <if test="ccStartTime != null  and ccStartTime != ''"> and cc_start_time = #{ccStartTime}</if>
-            <if test="ccEndTime != null  and ccEndTime != ''"> and cc_end_time = #{ccEndTime}</if>
+            <if test="ccStartTime != null  and ccStartTime != ''"> and date_format(cc_start_time,'%Y-%m-%d %H:%I:%s') >= date_format(#{ccStartTime},'%Y-%m-%d %H:%I:%s')</if>
+            <if test="ccEndTime != null  and ccEndTime != ''"> and date_format(cc_end_time,'%Y-%m-%d %H:%I:%s') <![CDATA[ <= ]]> date_format(#{ccEndTime},'%Y-%m-%d %H:%I:%s')</if>
             <if test="ccCheckTime != null  and ccCheckTime != ''"> and cc_check_time = #{ccCheckTime}</if>
             <if test="ccFlag != null  and ccFlag != ''"> and cc_flag = #{ccFlag}</if>
             <if test="ccRemark != null  and ccRemark != ''"> and cc_remark = #{ccRemark}</if>
@@ -60,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LEFT JOIN sys_dept b ON a.dept_id = b.dept_id
         WHERE
             a.dept_id IS NOT NULL
+            and a.flag = '1'
         <if test="uesrId != null"> and a.user_id = #{uesrId}</if>
 
     </select>
