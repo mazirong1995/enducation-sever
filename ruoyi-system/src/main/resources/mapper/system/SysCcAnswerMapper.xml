@@ -3,24 +3,27 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysCcAnswerMapper">
-    
+
     <resultMap type="SysCcAnswer" id="SysCcAnswerResult">
         <result property="id"    column="id"    />
         <result property="ccId"    column="cc_id"    />
+        <result property="ccIdName"    column="cc_id_name"    />
         <result property="stuId"    column="stu_id"    />
+        <result property="stuIdName"    column="stu_id_name"    />
         <result property="teaId"    column="tea_id"    />
+        <result property="teaIdName"    column="tea_id_name"    />
         <result property="anPath"    column="an_path"    />
         <result property="anGrade"    column="an_grade"    />
         <result property="anRemark"    column="an_remark"    />
     </resultMap>
 
     <sql id="selectSysCcAnswerVo">
-        select id, cc_id, stu_id, tea_id, an_path, an_grade, an_remark from sys_cc_answer
+        select id, cc_id,()  stu_id, tea_id, an_path, an_grade, an_remark from sys_cc_answer
     </sql>
 
     <select id="selectSysCcAnswerList" parameterType="SysCcAnswer" resultMap="SysCcAnswerResult">
         <include refid="selectSysCcAnswerVo"/>
-        <where>  
+        <where>
             <if test="ccId != null "> and cc_id = #{ccId}</if>
             <if test="stuId != null "> and stu_id = #{stuId}</if>
             <if test="teaId != null "> and tea_id = #{teaId}</if>
@@ -29,12 +32,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="anRemark != null  and anRemark != ''"> and an_remark = #{anRemark}</if>
         </where>
     </select>
-    
+
     <select id="selectSysCcAnswerById" parameterType="Long" resultMap="SysCcAnswerResult">
         <include refid="selectSysCcAnswerVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertSysCcAnswer" parameterType="SysCcAnswer" useGeneratedKeys="true" keyProperty="id">
         insert into sys_cc_answer
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSysCcAnswerByIds" parameterType="String">
-        delete from sys_cc_answer where id in 
+        delete from sys_cc_answer where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

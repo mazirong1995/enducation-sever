@@ -42,6 +42,34 @@ public class SysCcAnswer extends BaseEntity
     @Excel(name = "备注")
     private String anRemark;
 
+    private String ccIdName;
+    private String stuIdName;
+    private String teaIdName;
+
+    public String getCcIdName() {
+        return ccIdName;
+    }
+
+    public void setCcIdName(String ccIdName) {
+        this.ccIdName = ccIdName;
+    }
+
+    public String getStuIdName() {
+        return stuIdName;
+    }
+
+    public void setStuIdName(String stuIdName) {
+        this.stuIdName = stuIdName;
+    }
+
+    public String getTeaIdName() {
+        return teaIdName;
+    }
+
+    public void setTeaIdName(String teaIdName) {
+        this.teaIdName = teaIdName;
+    }
+
     public void setId(Long id)
     {
         this.id = id;
