@@ -1,11 +1,14 @@
 package com.ruoyi.system.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,33 +36,58 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/stu")
-public class SysCcStuController extends BaseController
-{
+public class SysCcStuController extends BaseController {
     @Autowired
     private ISysCcStuService sysCcStuService;
+    @Autowired
+    private ISysUserService sysUserService;
 
     /**
      * 教师查询学生选课列表
-     * todo 传参用户id
      */
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @GetMapping("/list")
-    public TableDataInfo list(SysCcStu sysCcStu)
-    {
-        //教师查询同一班级下的学生id
-        List<String> stuIds = sysCcStuService.getStuIds();
+    public TableDataInfo list(SysCcStu sysCcStu) {
+
+        Long userId = SecurityUtils.getUserId();
+        SysUser sysUser = sysUserService.selectUserById(userId);
+        if(!"1".equals(sysUser.getFlag())){
+            userId = null;
+        }
+        List<String> stuIds = new ArrayList<>();
+        if (sysCcStu.getStuId() != null && !"".equals(sysCcStu.getStuId())) {
+            stuIds.add(sysCcStu.getStuId().toString());
+        } else {
+            //教师查询同一班级下的学生id
+            stuIds = sysCcStuService.getStuIds(userId);
+        }
         startPage();
         List<SysCcStu> list = sysCcStuService.selectSysCcStuData(stuIds);
         return getDataTable(list);
     }
 
     /**
+     * 教师查询学生选课列表页面的学生下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:stu:query')")
+    @GetMapping("/pullDown")
+    public AjaxResult pullDown() {
+        Long userId = SecurityUtils.getUserId();
+        SysUser sysUser = sysUserService.selectUserById(userId);
+        if(!"1".equals(sysUser.getFlag())){
+            userId = null;
+        }
+        List<Map<String, Object>> stuIdsForPD = sysCcStuService.getStuIdsForPD(userId);
+        return success(stuIdsForPD);
+    }
+
+
+    /**
      * 查询学生自己选课列表
      */
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @GetMapping("/list1")
-    public TableDataInfo list1(SysCcStu sysCcStu)
-    {
+    public TableDataInfo list1(SysCcStu sysCcStu) {
         sysCcStu.setStuId(SecurityUtils.getUserId());
         startPage();
         List<SysCcStu> list = sysCcStuService.selectSysCcStuList(sysCcStu);
@@ -72,8 +100,7 @@ public class SysCcStuController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @Log(title = "学生选课", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysCcStu sysCcStu)
-    {
+    public void export(HttpServletResponse response, SysCcStu sysCcStu) {
         List<SysCcStu> list = sysCcStuService.selectSysCcStuList(sysCcStu);
         ExcelUtil<SysCcStu> util = new ExcelUtil<SysCcStu>(SysCcStu.class);
         util.exportExcel(response, list, "学生选课数据");
@@ -84,8 +111,7 @@ public class SysCcStuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(sysCcStuService.selectSysCcStuById(id));
     }
 
@@ -95,8 +121,7 @@ public class SysCcStuController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:stu:edit')")
     @Log(title = "学生选课", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysCcStu sysCcStu)
-    {
+    public AjaxResult add(@RequestBody SysCcStu sysCcStu) {
         return toAjax(sysCcStuService.insertSysCcStu(sysCcStu));
     }
 
@@ -106,18 +131,17 @@ public class SysCcStuController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:stu:edit')")
     @Log(title = "学生选课", businessType = BusinessType.INSERT)
     @PostMapping("/add1")
-    public AjaxResult add1(@RequestBody JSONObject jsonObject)
-    {
+    public AjaxResult add1(@RequestBody JSONObject jsonObject) {
         SysCcStu sysCcStu = new SysCcStu();
         //获取当前登录人的id
         Long userId = SecurityUtils.getUserId();
         sysCcStu.setStuId(userId);
         List<SysCcStu> sysCcStus = sysCcStuService.selectSysCcStuList(sysCcStu);
-        if(sysCcStus.size()>0){
+        if (sysCcStus.size() > 0) {
             sysCcStu.setId(sysCcStus.get(0).getId());
             sysCcStu.setCcIds(jsonObject.getJSONArray("ccIds").toString());
             return toAjax(sysCcStuService.updateSysCcStu(sysCcStu));
-        }else{
+        } else {
             sysCcStu.setCcIds(jsonObject.getJSONArray("ccIds").toString());
             return toAjax(sysCcStuService.insertSysCcStu(sysCcStu));
         }
@@ -129,8 +153,7 @@ public class SysCcStuController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:stu:edit')")
     @Log(title = "学生选课", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysCcStu sysCcStu)
-    {
+    public AjaxResult edit(@RequestBody SysCcStu sysCcStu) {
         return toAjax(sysCcStuService.updateSysCcStu(sysCcStu));
     }
 
@@ -139,9 +162,8 @@ public class SysCcStuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:stu:edit')")
     @Log(title = "学生选课", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(sysCcStuService.deleteSysCcStuByIds(ids));
     }
 }

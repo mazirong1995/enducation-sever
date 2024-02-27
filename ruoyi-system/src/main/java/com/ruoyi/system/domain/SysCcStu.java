@@ -22,9 +22,32 @@ public class SysCcStu extends BaseEntity
     @Excel(name = "学生id")
     private Long stuId;
 
+    @Excel(name = "学生id")
+    private String stuIdName;
+
     /** 课程数组 */
     @Excel(name = "课程数组")
     private String ccIds;
+
+    /** 课程数组 */
+    @Excel(name = "课程数组")
+    private String ccIdsName;
+
+    public String getStuIdName() {
+        return stuIdName;
+    }
+
+    public void setStuIdName(String stuIdName) {
+        this.stuIdName = stuIdName;
+    }
+
+    public String getCcIdsName() {
+        return ccIdsName;
+    }
+
+    public void setCcIdsName(String ccIdsName) {
+        this.ccIdsName = ccIdsName;
+    }
 
     public void setId(Long id)
     {

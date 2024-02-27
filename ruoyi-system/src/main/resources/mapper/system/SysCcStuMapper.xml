@@ -7,11 +7,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SysCcStu" id="SysCcStuResult">
         <result property="id"    column="id"    />
         <result property="stuId"    column="stu_id"    />
+        <result property="stuIdName"    column="stu_id_name"    />
         <result property="ccIds"    column="cc_ids"    />
     </resultMap>
 
     <sql id="selectSysCcStuVo">
-        select id, stu_id, cc_ids from sys_cc_stu
+        select id, stu_id,(select a.nick_name from sys_user a where a.user_id = stu_id) as stu_id_name, cc_ids from sys_cc_stu
     </sql>
 
     <select id="selectSysCcStuList" parameterType="SysCcStu" resultMap="SysCcStuResult">
@@ -44,10 +45,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             b.user_id AS userId
         FROM
             sys_user b
-        WHERE
-            b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+        <where>
+            <if test="userId != null">
+               and b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+            </if>
             AND b.flag = '2'
+        </where>
     </select>
+
+    <select id="getStuIdsForPD" parameterType="Long" resultType="map">
+        SELECT
+            b.user_id AS stuId,
+            b.nick_name AS userName
+        FROM
+            sys_user b
+        <where>
+            <if test="userId != null">
+                and b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+            </if>
+            AND b.flag = '2'
+        </where>
+    </select>
+
 
     <insert id="insertSysCcStu" parameterType="SysCcStu" useGeneratedKeys="true" keyProperty="id">
         insert into sys_cc_stu

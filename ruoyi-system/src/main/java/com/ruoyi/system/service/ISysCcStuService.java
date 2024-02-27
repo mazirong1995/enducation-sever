@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysCcStu;
 
 /**
@@ -59,7 +61,9 @@ public interface ISysCcStuService
      */
     public int deleteSysCcStuById(Long id);
 
-    List<String> getStuIds();
+    List<String> getStuIds(Long userId);
+
+    List<Map<String,Object>> getStuIdsForPD(Long userId);
 
     List<SysCcStu> selectSysCcStuData(List<String> stuIds);
 }

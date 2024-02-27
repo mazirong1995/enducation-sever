@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysCcStu;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,6 +63,8 @@ public interface SysCcStuMapper
     public int deleteSysCcStuByIds(Long[] ids);
 
     List<String> getStuIds(@Param("userId") Long userId);
+
+    List<Map<String,Object>> getStuIdsForPD(@Param("userId") Long userId);
 
     List<SysCcStu> selectSysCcStuData(@Param("stuIds") List<String> stuIds);
 }

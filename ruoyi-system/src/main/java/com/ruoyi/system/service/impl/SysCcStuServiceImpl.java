@@ -1,8 +1,13 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.SysCompulsoryCourse;
+import com.ruoyi.system.mapper.SysCompulsoryCourseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysCcStuMapper;
@@ -20,6 +25,8 @@ public class SysCcStuServiceImpl implements ISysCcStuService
 {
     @Autowired
     private SysCcStuMapper sysCcStuMapper;
+    @Autowired
+    private SysCompulsoryCourseMapper sysCompulsoryCourseMapper;
 
     /**
      * 查询学生选课
@@ -103,12 +110,39 @@ public class SysCcStuServiceImpl implements ISysCcStuService
     }
 
     @Override
-    public List<String> getStuIds() {
-        return sysCcStuMapper.getStuIds(SecurityUtils.getUserId());
+    public List<String> getStuIds(Long userId) {
+        return sysCcStuMapper.getStuIds(userId);
+    }
+
+    @Override
+    public List<Map<String,Object>> getStuIdsForPD(Long userId) {
+        return sysCcStuMapper.getStuIdsForPD(userId);
     }
 
     @Override
     public List<SysCcStu> selectSysCcStuData(List<String> stuIds) {
-        return sysCcStuMapper.selectSysCcStuData(stuIds);
+        List<SysCcStu> sysCcStus = sysCcStuMapper.selectSysCcStuData(stuIds);
+        sysCcStus.forEach(e->{
+            String ccIds = e.getCcIds();
+            JSONArray jsonArray = JSONArray.parseArray(ccIds);
+            //获取课程id
+            List<String> ccIdarray = new ArrayList<>();
+            jsonArray.forEach(j->{
+                ccIdarray.add(j.toString());
+            });
+            //根据课程id获取名称
+            List<SysCompulsoryCourse> sysCompulsoryCourses = sysCompulsoryCourseMapper.selectSysCompulsoryCourses(ccIdarray);
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < sysCompulsoryCourses.size(); i++) {
+                if(i!=sysCompulsoryCourses.size()-1){
+                    stringBuffer.append(sysCompulsoryCourses.get(i).getCcName()).append(",");
+                }else{
+                    stringBuffer.append(sysCompulsoryCourses.get(i).getCcName());
+                }
+            }
+            e.setCcIdsName(stringBuffer.toString());
+
+        });
+        return sysCcStus;
     }
 }
