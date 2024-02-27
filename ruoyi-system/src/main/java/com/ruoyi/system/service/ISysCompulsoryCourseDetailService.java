@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.system.domain.SysCompulsoryCourseDetail;
+import com.ruoyi.system.domain.vo.TreeVo;
 
 /**
  * 课程详情Service接口
@@ -28,6 +29,14 @@ public interface ISysCompulsoryCourseDetailService
      * @return 课程详情集合
      */
     public List<SysCompulsoryCourseDetail> selectSysCompulsoryCourseDetailList(SysCompulsoryCourseDetail sysCompulsoryCourseDetail);
+
+    /**
+     * 查询课程详情列表
+     * todo 树状结构
+     * @param sysCompulsoryCourseDetail 课程详情
+     * @return 课程详情集合
+     */
+    public List<TreeVo> selectSysCompulsoryCourseDetailList1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail);
 
     /**
      * 新增课程详情
@@ -64,6 +73,8 @@ public interface ISysCompulsoryCourseDetailService
     List<Map<String, Object>> pullDownCourse(String flag);
 
     List<SysCompulsoryCourseDetail> list2(List<String> Courses);
+
+    List<TreeVo> list2_1(List<String> Courses);
 
     Map<String, Object> getStuCourses(Long userId);
 }

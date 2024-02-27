@@ -18,7 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysCcAnswerVo">
-        select id, cc_id,()  stu_id, tea_id, an_path, an_grade, an_remark from sys_cc_answer
+        select id, cc_id,(select a.cc_name from sys_compulsory_course a where a.id= cc_id) as cc_id_name,
+         stu_id, (select a.nick_name from sys_user a where a.user_id = stu_id) as stu_id_name,
+         tea_id, (select a.nick_name from sys_user a where a.user_id = tea_id) as tea_id_name,
+        an_path, an_grade, an_remark from sys_cc_answer
     </sql>
 
     <select id="selectSysCcAnswerList" parameterType="SysCcAnswer" resultMap="SysCcAnswerResult">

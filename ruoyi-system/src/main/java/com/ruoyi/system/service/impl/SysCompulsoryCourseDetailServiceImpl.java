@@ -1,8 +1,11 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.ruoyi.system.domain.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysCompulsoryCourseDetailMapper;
@@ -45,6 +48,27 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
         return sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
     }
 
+
+    /**
+     * 查询课程详情列表
+     *
+     * @param sysCompulsoryCourseDetail 课程详情
+     * @return 课程详情
+     */
+    @Override
+    public List<TreeVo> selectSysCompulsoryCourseDetailList1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
+    {
+        List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
+        Map<String, List<SysCompulsoryCourseDetail>> collect = sysCompulsoryCourseDetails.stream().collect(Collectors.groupingBy(SysCompulsoryCourseDetail::getCcName));
+        List<TreeVo> result = new ArrayList<>();
+        collect.forEach((key,value)->{
+            TreeVo treeVo = new TreeVo();
+            treeVo.setName(key);
+            treeVo.setChildren(value);
+            result.add(treeVo);
+        });
+        return result;
+    }
     /**
      * 新增课程详情
      *
@@ -101,6 +125,20 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     @Override
     public List<SysCompulsoryCourseDetail> list2(List<String> Courses) {
         return sysCompulsoryCourseDetailMapper.list2(Courses);
+    }
+
+    @Override
+    public List<TreeVo> list2_1(List<String> Courses) {
+        List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.list2(Courses);
+        Map<String, List<SysCompulsoryCourseDetail>> collect = sysCompulsoryCourseDetails.stream().collect(Collectors.groupingBy(SysCompulsoryCourseDetail::getCcName));
+        List<TreeVo> result = new ArrayList<>();
+        collect.forEach((key,value)->{
+            TreeVo treeVo = new TreeVo();
+            treeVo.setName(key);
+            treeVo.setChildren(value);
+            result.add(treeVo);
+        });
+        return result;
     }
 
     @Override
