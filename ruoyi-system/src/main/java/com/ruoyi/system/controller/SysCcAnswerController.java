@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 课程考试答案库Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
@@ -85,7 +85,7 @@ public class SysCcAnswerController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:answer:edit')")
     @Log(title = "课程考试答案库", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/stuAnswer")
     public AjaxResult add1(@RequestBody SysCcAnswer sysCcAnswer)
     {
         sysCcAnswer.setStuId(sysCcAnswer.getUserId());
