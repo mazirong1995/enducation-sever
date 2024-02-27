@@ -64,6 +64,11 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping("/student")
     public TableDataInfo student(SysUser user) {
+
+        SysUser sysUser = userService.selectUserById(getLoginUser().getUserId());
+        if(sysUser.getFlag() != "0"){
+            user.setDeptId(sysUser.getDeptId());
+        }
         startPage();
         user.setFlag("2");
         List<SysUser> list = userService.selectUserList(user);
