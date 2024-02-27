@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysCcAnswer;
+import com.ruoyi.system.domain.vo.TreeVo;
 
 /**
  * 课程考试答案库Service接口
@@ -26,6 +27,8 @@ public interface ISysCcAnswerService
      * @return 课程考试答案库集合
      */
     public List<SysCcAnswer> selectSysCcAnswerList(SysCcAnswer sysCcAnswer);
+
+    List<TreeVo> selectSysCcAnswerList1(SysCcAnswer sysCcAnswer);
 
     /**
      * 新增课程考试答案库

@@ -1,6 +1,12 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.ruoyi.system.domain.SysCompulsoryCourseDetail;
+import com.ruoyi.system.domain.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysCcAnswerMapper;
@@ -41,6 +47,28 @@ public class SysCcAnswerServiceImpl implements ISysCcAnswerService
     public List<SysCcAnswer> selectSysCcAnswerList(SysCcAnswer sysCcAnswer)
     {
         return sysCcAnswerMapper.selectSysCcAnswerList(sysCcAnswer);
+    }
+
+
+    /**
+     * 教师查询课程考试答案库列表
+     * todo 树状结构
+     * @param sysCcAnswer 课程考试答案库
+     * @return 课程考试答案库
+     */
+    @Override
+    public List<TreeVo> selectSysCcAnswerList1(SysCcAnswer sysCcAnswer)
+    {
+        List<SysCcAnswer> sysCcAnswers = sysCcAnswerMapper.selectSysCcAnswerList(sysCcAnswer);
+        Map<String, List<SysCcAnswer>> collect = sysCcAnswers.stream().collect(Collectors.groupingBy(SysCcAnswer::getCcIdName));
+        List<TreeVo> result = new ArrayList<>();
+        collect.forEach((key,value)->{
+            TreeVo treeVo = new TreeVo();
+            treeVo.setName(key);
+            treeVo.setChildren(value);
+            result.add(treeVo);
+        });
+        return result;
     }
 
     /**

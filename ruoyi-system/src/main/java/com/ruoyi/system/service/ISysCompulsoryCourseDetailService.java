@@ -74,6 +74,11 @@ public interface ISysCompulsoryCourseDetailService
 
     List<SysCompulsoryCourseDetail> list2(List<String> Courses);
 
+    /**
+     * 学生已选课程详情列表
+     * todo 树状结构
+     * @return 课程详情集合
+     */
     List<TreeVo> list2_1(List<String> Courses);
 
     Map<String, Object> getStuCourses(Long userId);
