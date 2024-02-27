@@ -67,7 +67,6 @@ public class SysCompulsoryCourseDetailController extends BaseController
 
     /**
      * 查询学生已选课程详情列表
-     * todo 传参userId
      */
     @PreAuthorize("@ss.hasPermi('system:detail:query')")
     @GetMapping("/list2")
