@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysCompulsoryCourseMapper">
-    
+
     <resultMap type="SysCompulsoryCourse" id="SysCompulsoryCourseResult">
         <result property="id"    column="id"    />
         <result property="ccName"    column="cc_name"    />
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSysCompulsoryCourseList" parameterType="SysCompulsoryCourse" resultMap="SysCompulsoryCourseResult">
         <include refid="selectSysCompulsoryCourseVo"/>
-        <where>  
+        <where>
             <if test="ccName != null "> and cc_name like concat('%', #{ccName}, '%')</if>
             <if test="ccTeacher != null  and ccTeacher != ''"> and cc_teacher = #{ccTeacher}</if>
             <if test="ccDuration != null  and ccDuration != ''"> and cc_duration = #{ccDuration}</if>
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ccRemark != null  and ccRemark != ''"> and cc_remark = #{ccRemark}</if>
         </where>
     </select>
-    
+
     <select id="selectSysCompulsoryCourseById" parameterType="Long" resultMap="SysCompulsoryCourseResult">
         <include refid="selectSysCompulsoryCourseVo"/>
         where id = #{id}
@@ -41,10 +41,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSysCompulsoryCourses" resultMap="SysCompulsoryCourseResult">
         <include refid="selectSysCompulsoryCourseVo"/>
-        where id in
-        <foreach collection="courseIds" item="courseId" index="index" open="(" close=")" separator=",">
-            #{courseId}
-        </foreach>
+         <where>
+             <if test="courseIds != null and courseIds.size()>0 ">
+                 and id in
+                 <foreach collection="courseIds" item="courseId" index="index" open="(" close=")" separator=",">
+                     #{courseId}
+                 </foreach>
+             </if>
+         </where>
     </select>
 
     <select id="getPullDown" parameterType="Long" resultType="map">
@@ -76,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             AND b.flag = '1')
 
     </select>
-        
+
     <insert id="insertSysCompulsoryCourse" parameterType="SysCompulsoryCourse" useGeneratedKeys="true" keyProperty="id">
         insert into sys_compulsory_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -121,7 +125,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSysCompulsoryCourseByIds" parameterType="String">
-        delete from sys_compulsory_course where id in 
+        delete from sys_compulsory_course where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -45,11 +45,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="list2" parameterType = 'arraylist' resultMap="SysCompulsoryCourseDetailResult">
        select a.id, a.cc_id, a.ccd_name, a.ccd_data_path, a.ccd_remark,b.cc_name from sys_compulsory_course_detail a
         left join sys_compulsory_course b on a.cc_id = b.id
-        where a.cc_id in
-        <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
-            #{course}
-        </foreach>
-
+        <where>
+            <if test="courses != null and courses.size()>0">
+                and a.cc_id in
+                <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
+                    #{course}
+                </foreach>
+            </if>
+        </where>
     </select>
 
     <insert id="insertSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail" useGeneratedKeys="true" keyProperty="id">
