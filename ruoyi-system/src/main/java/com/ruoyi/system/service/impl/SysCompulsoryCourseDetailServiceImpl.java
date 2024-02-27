@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysCompulsoryCourseDetailMapper;
@@ -89,5 +91,20 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     public int deleteSysCompulsoryCourseDetailById(Long id)
     {
         return sysCompulsoryCourseDetailMapper.deleteSysCompulsoryCourseDetailById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> pullDownCourse(String flag) {
+        return sysCompulsoryCourseDetailMapper.pullDownCourse(flag);
+    }
+
+    @Override
+    public List<SysCompulsoryCourseDetail> list2(List<String> Courses) {
+        return sysCompulsoryCourseDetailMapper.list2(Courses);
+    }
+
+    @Override
+    public Map<String, Object> getStuCourses(String userId) {
+        return sysCompulsoryCourseDetailMapper.getStuCourses(userId);
     }
 }

@@ -81,14 +81,30 @@ public class SysCcAnswerController extends BaseController
     }
 
     /**
-     * 修改课程考试答案库
+     * 学生新增课程考试答案库
+     */
+    @PreAuthorize("@ss.hasPermi('system:answer:edit')")
+    @Log(title = "课程考试答案库", businessType = BusinessType.INSERT)
+    @PostMapping
+    public AjaxResult add1(@RequestBody SysCcAnswer sysCcAnswer)
+    {
+        sysCcAnswer.setStuId(sysCcAnswer.getUserId());
+        return toAjax(sysCcAnswerService.insertSysCcAnswer(sysCcAnswer));
+    }
+
+    /**
+     * 教师修改课程考试答案库
      */
     @PreAuthorize("@ss.hasPermi('system:answer:edit')")
     @Log(title = "课程考试答案库", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysCcAnswer sysCcAnswer)
     {
-        return toAjax(sysCcAnswerService.updateSysCcAnswer(sysCcAnswer));
+        SysCcAnswer sysCcAnswer1 = sysCcAnswerService.selectSysCcAnswerById(sysCcAnswer.getId());
+        sysCcAnswer1.setTeaId(sysCcAnswer.getUserId());
+        sysCcAnswer1.setAnGrade(sysCcAnswer.getAnGrade());
+        sysCcAnswer1.setAnRemark(sysCcAnswer.getAnRemark());
+        return toAjax(sysCcAnswerService.updateSysCcAnswer(sysCcAnswer1));
     }
 
     /**

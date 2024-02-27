@@ -97,4 +97,14 @@ public class SysCompulsoryCourseServiceImpl implements ISysCompulsoryCourseServi
     public List<Map<String, Object>> getPullDown(Long uesrId) {
         return sysCompulsoryCourseMapper.getPullDown(uesrId);
     }
+
+    @Override
+    public List<String> getCourseIds(Long userId) {
+        return sysCompulsoryCourseMapper.getCourseIds(userId);
+    }
+
+    @Override
+    public List<SysCompulsoryCourse> selectSysCompulsoryCourses(List<String> courseIds) {
+        return sysCompulsoryCourseMapper.selectSysCompulsoryCourses(courseIds);
+    }
 }

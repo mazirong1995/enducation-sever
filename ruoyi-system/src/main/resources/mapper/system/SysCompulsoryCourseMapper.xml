@@ -39,6 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectSysCompulsoryCourses" resultMap="SysCompulsoryCourseResult">
+        <include refid="selectSysCompulsoryCourseVo"/>
+        where id in
+        <foreach collection="courseIds" item="courseId" index="index" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+    </select>
+
     <select id="getPullDown" parameterType="Long" resultType="map">
        SELECT
             a.user_id as userId,
@@ -49,6 +57,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE
             a.dept_id IS NOT NULL
         <if test="uesrId != null"> and a.user_id = #{uesrId}</if>
+
+    </select>
+
+    <select id="getCourseIds" parameterType="Long" resultType="String">
+        SELECT
+            c.id AS couserId
+        FROM
+            sys_compulsory_course c
+        WHERE
+            c.cc_teacher IN (
+            SELECT
+                b.user_id AS userId
+            FROM
+                sys_user b
+            WHERE
+            b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{uesrId} LIMIT 1 )
+            AND b.flag = '1')
 
     </select>
         

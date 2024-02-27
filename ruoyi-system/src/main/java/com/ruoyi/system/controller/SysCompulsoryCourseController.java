@@ -62,6 +62,21 @@ public class SysCompulsoryCourseController extends BaseController
     }
 
     /**
+     * 查询学生选课程列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:course:query')")
+    @GetMapping("/list2")
+    public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse)
+    {
+        //根据学生id查询教师id，查询相关课程id
+        List<String> courseIds = sysCompulsoryCourseService.getCourseIds(sysCompulsoryCourse.getUserId());
+        startPage();
+        sysCompulsoryCourse.setCcFlag("1");
+        List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourses(courseIds);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出课程列表
      */
     @PreAuthorize("@ss.hasPermi('system:course:query')")

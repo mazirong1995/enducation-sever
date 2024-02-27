@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ccdName"    column="ccd_name"    />
         <result property="ccdDataPath"    column="ccd_data_path"    />
         <result property="ccdRemark"    column="ccd_remark"    />
+        <result property="ccName"    column="cc_name"    />
     </resultMap>
 
     <sql id="selectSysCompulsoryCourseDetailVo">
@@ -17,12 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectSysCompulsoryCourseDetailList" parameterType="SysCompulsoryCourseDetail" resultMap="SysCompulsoryCourseDetailResult">
-        <include refid="selectSysCompulsoryCourseDetailVo"/>
-        <where>  
-            <if test="ccId != null "> and cc_id = #{ccId}</if>
-            <if test="ccdName != null  and ccdName != ''"> and ccd_name like concat('%', #{ccdName}, '%')</if>
-            <if test="ccdDataPath != null  and ccdDataPath != ''"> and ccd_data_path = #{ccdDataPath}</if>
-            <if test="ccdRemark != null  and ccdRemark != ''"> and ccd_remark = #{ccdRemark}</if>
+        select a.id, a.cc_id, a.ccd_name, a.ccd_data_path, a.ccd_remark,b.cc_name from sys_compulsory_course_detail a
+        left join sys_compulsory_course b on a.cc_id = b.id
+        <where>
+            <if test="ccId != null "> and a.cc_id = #{ccId}</if>
+            <if test="flag != null "> and b.cc_flag = #{flag}</if>
         </where>
     </select>
     
@@ -30,7 +30,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysCompulsoryCourseDetailVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="pullDownCourse" parameterType = 'String' resultType="map">
+        select a.id as ccId,a.cc_name as ccName from sys_compulsory_course a
+        <where>
+            <if test="flag != null "> and a.cc_flag = #{flag}</if>
+        </where>
+    </select>
+
+    <select id="getStuCourses" parameterType = 'String' resultType="map">
+       select a.cc_ids as ccIds from sys_cc_stu a where a.stu_id = #{userId} limit 1
+    </select>
+
+    <select id="list2" parameterType = 'arraylist' resultMap="SysCompulsoryCourseDetailResult">
+       select a.id, a.cc_id, a.ccd_name, a.ccd_data_path, a.ccd_remark,b.cc_name from sys_compulsory_course_detail a
+        left join sys_compulsory_course b on a.cc_id = b.id
+        where a.cc_id in
+        <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
+            #{course}
+        </foreach>
+
+    </select>
+
     <insert id="insertSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail" useGeneratedKeys="true" keyProperty="id">
         insert into sys_compulsory_course_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">

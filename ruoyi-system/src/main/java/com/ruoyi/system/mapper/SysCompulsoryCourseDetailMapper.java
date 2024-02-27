@@ -1,7 +1,10 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysCompulsoryCourseDetail;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 课程详情Mapper接口
@@ -58,4 +61,10 @@ public interface SysCompulsoryCourseDetailMapper
      * @return 结果
      */
     public int deleteSysCompulsoryCourseDetailByIds(Long[] ids);
+
+    List<Map<String, Object>> pullDownCourse(@Param("flag") String flag);
+
+    Map<String, Object> getStuCourses(@Param("userId") String userId);
+
+    List<SysCompulsoryCourseDetail> list2(@Param("courses") List<String> courses);
 }

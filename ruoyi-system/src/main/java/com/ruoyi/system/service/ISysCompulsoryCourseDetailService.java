@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysCompulsoryCourseDetail;
 
 /**
@@ -58,4 +60,10 @@ public interface ISysCompulsoryCourseDetailService
      * @return 结果
      */
     public int deleteSysCompulsoryCourseDetailById(Long id);
+
+    List<Map<String, Object>> pullDownCourse(String flag);
+
+    List<SysCompulsoryCourseDetail> list2(List<String> Courses);
+
+    Map<String, Object> getStuCourses(String userId);
 }

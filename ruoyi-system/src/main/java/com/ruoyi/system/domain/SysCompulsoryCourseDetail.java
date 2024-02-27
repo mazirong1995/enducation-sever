@@ -34,7 +34,37 @@ public class SysCompulsoryCourseDetail extends BaseEntity
     @Excel(name = "课程备注")
     private String ccdRemark;
 
-    public void setId(Long id) 
+    private String flag;
+
+    private String ccName;
+
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getCcName() {
+        return ccName;
+    }
+
+    public void setCcName(String ccName) {
+        this.ccName = ccName;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

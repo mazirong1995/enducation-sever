@@ -1,6 +1,7 @@
 package com.ruoyi.system.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,29 @@ public class SysCcStuController extends BaseController
     private ISysCcStuService sysCcStuService;
 
     /**
-     * 查询学生选课列表
+     * 教师查询学生选课列表
+     * todo 传参用户id
      */
     @PreAuthorize("@ss.hasPermi('system:stu:query')")
     @GetMapping("/list")
     public TableDataInfo list(SysCcStu sysCcStu)
     {
+        //教师查询同一班级下的学生id
+        List<String> stuIds = sysCcStuService.getStuIds(sysCcStu);
+        startPage();
+        List<SysCcStu> list = sysCcStuService.selectSysCcStuData(stuIds);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询学生自己选课列表
+     * todo 传参用户id
+     */
+    @PreAuthorize("@ss.hasPermi('system:stu:query')")
+    @GetMapping("/list1")
+    public TableDataInfo list1(SysCcStu sysCcStu)
+    {
+        sysCcStu.setStuId(sysCcStu.getUserId());
         startPage();
         List<SysCcStu> list = sysCcStuService.selectSysCcStuList(sysCcStu);
         return getDataTable(list);

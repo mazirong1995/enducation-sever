@@ -63,4 +63,8 @@ public interface SysCompulsoryCourseMapper
     public int deleteSysCompulsoryCourseByIds(Long[] ids);
 
     List<Map<String, Object>> getPullDown(@Param("uesrId") Long uesrId);
+
+    List<String> getCourseIds(@Param("uesrId") Long userId);
+
+    List<SysCompulsoryCourse> selectSysCompulsoryCourses(@Param("courseIds") List<String> courseIds);
 }

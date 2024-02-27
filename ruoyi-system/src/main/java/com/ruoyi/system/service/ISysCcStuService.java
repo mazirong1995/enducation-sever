@@ -58,4 +58,8 @@ public interface ISysCcStuService
      * @return 结果
      */
     public int deleteSysCcStuById(Long id);
+
+    List<String> getStuIds(SysCcStu sysCcStu);
+
+    List<SysCcStu> selectSysCcStuData(List<String> stuIds);
 }

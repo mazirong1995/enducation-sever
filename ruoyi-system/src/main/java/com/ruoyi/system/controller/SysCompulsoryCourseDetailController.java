@@ -1,6 +1,9 @@
 package com.ruoyi.system.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +38,72 @@ public class SysCompulsoryCourseDetailController extends BaseController
     private ISysCompulsoryCourseDetailService sysCompulsoryCourseDetailService;
 
     /**
-     * 查询课程详情列表
+     * 查询必修课程详情列表
      */
     @PreAuthorize("@ss.hasPermi('system:detail:query')")
     @GetMapping("/list")
     public TableDataInfo list(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
     {
         startPage();
+        sysCompulsoryCourseDetail.setFlag("0");
         List<SysCompulsoryCourseDetail> list = sysCompulsoryCourseDetailService.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询选修课程详情列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/list1")
+    public TableDataInfo list1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
+    {
+        startPage();
+        sysCompulsoryCourseDetail.setFlag("1");
+        List<SysCompulsoryCourseDetail> list = sysCompulsoryCourseDetailService.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询学生已选课程详情列表
+     * todo 传参userId
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/list2")
+    public TableDataInfo list2(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
+    {
+        //根据学生id，查询已经选的课程
+        Map<String,Object> result = sysCompulsoryCourseDetailService.getStuCourses(sysCompulsoryCourseDetail.getUserId());
+        startPage();
+        List<SysCompulsoryCourseDetail> list = new ArrayList<>();
+        Object ccIds = result.get("ccIds");
+        if (ccIds != null ){
+            String s = String.valueOf(ccIds);
+            String[] split = s.split(",");
+            list = sysCompulsoryCourseDetailService.list2(Arrays.asList(split));
+        }
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询必修课程下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/pullDownCourse")
+    public AjaxResult pullDownCourse()
+    {
+        List<Map<String,Object>> result = sysCompulsoryCourseDetailService.pullDownCourse("0");
+        return success(result);
+    }
+
+    /**
+     * 查询选修课程下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/pullDownCourse1")
+    public AjaxResult pullDownCourse1()
+    {
+        List<Map<String,Object>> result = sysCompulsoryCourseDetailService.pullDownCourse("1");
+        return success(result);
     }
 
     /**

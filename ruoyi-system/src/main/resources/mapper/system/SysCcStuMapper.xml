@@ -21,10 +21,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ccIds != null  and ccIds != ''"> and cc_ids = #{ccIds}</if>
         </where>
     </select>
+
+    <select id="selectSysCcStuData" parameterType="SysCcStu" resultMap="SysCcStuResult">
+        <include refid="selectSysCcStuVo"/>
+        <where>
+            and stu_id in
+            <foreach collection="stuIds" item="stuId" index="index" open="(" close=")" separator=",">
+                #{stuId}
+            </foreach>
+        </where>
+    </select>
     
     <select id="selectSysCcStuById" parameterType="Long" resultMap="SysCcStuResult">
         <include refid="selectSysCcStuVo"/>
         where id = #{id}
+    </select>
+
+    <select id="getStuIds" parameterType="String" resultType="String">
+        SELECT
+            b.user_id AS userId
+        FROM
+            sys_user b
+        WHERE
+            b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+            AND b.flag = '2'
     </select>
         
     <insert id="insertSysCcStu" parameterType="SysCcStu" useGeneratedKeys="true" keyProperty="id">

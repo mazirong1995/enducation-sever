@@ -52,7 +52,16 @@ public class SysCcStuServiceImpl implements ISysCcStuService
     @Override
     public int insertSysCcStu(SysCcStu sysCcStu)
     {
-        return sysCcStuMapper.insertSysCcStu(sysCcStu);
+        List<SysCcStu> sysCcStus = sysCcStuMapper.selectSysCcStuList(sysCcStu);
+        if(sysCcStus.size()>0){
+            SysCcStu sysCcStusNew = new SysCcStu();
+            sysCcStusNew.setId(sysCcStus.get(0).getId());
+            sysCcStusNew.setCcIds(sysCcStu.getCcIds());
+            return sysCcStuMapper.updateSysCcStu(sysCcStusNew);
+        }else{
+            return sysCcStuMapper.insertSysCcStu(sysCcStu);
+        }
+
     }
 
     /**
@@ -89,5 +98,15 @@ public class SysCcStuServiceImpl implements ISysCcStuService
     public int deleteSysCcStuById(Long id)
     {
         return sysCcStuMapper.deleteSysCcStuById(id);
+    }
+
+    @Override
+    public List<String> getStuIds(SysCcStu sysCcStu) {
+        return sysCcStuMapper.getStuIds(String.valueOf(sysCcStu.getUserId()));
+    }
+
+    @Override
+    public List<SysCcStu> selectSysCcStuData(List<String> stuIds) {
+        return sysCcStuMapper.selectSysCcStuData(stuIds);
     }
 }

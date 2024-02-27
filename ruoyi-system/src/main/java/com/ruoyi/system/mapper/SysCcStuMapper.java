@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysCcStu;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 学生选课Mapper接口
@@ -58,4 +59,8 @@ public interface SysCcStuMapper
      * @return 结果
      */
     public int deleteSysCcStuByIds(Long[] ids);
+
+    List<String> getStuIds(@Param("userId") String userId);
+
+    List<SysCcStu> selectSysCcStuData(@Param("stuIds") List<String> stuIds);
 }

@@ -62,4 +62,8 @@ public interface ISysCompulsoryCourseService
     public int deleteSysCompulsoryCourseById(Long id);
 
     List<Map<String, Object>> getPullDown(Long uesrId);
+
+    List<String> getCourseIds(Long userId);
+
+    List<SysCompulsoryCourse> selectSysCompulsoryCourses(List<String> courseIds);
 }
