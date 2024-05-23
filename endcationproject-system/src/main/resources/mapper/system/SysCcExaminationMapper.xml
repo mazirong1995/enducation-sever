@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.endcationproject.system.mapper.SysCcExaminationMapper">
+
+    <resultMap type="SysCcExamination" id="SysCcExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="ccId"    column="cc_id"    />
+        <result property="ccName"    column="cc_name"    />
+        <result property="ccExaminationPath"    column="cc_examination_path"    />
+    </resultMap>
+
+    <sql id="selectSysCcExaminationVo">
+        select id, cc_id,(select scc.cc_name from sys_compulsory_course scc where scc.id =cc_id) as cc_name, cc_examination_path from sys_cc_examination
+    </sql>
+
+    <select id="selectSysCcExaminationList" parameterType="SysCcExamination" resultMap="SysCcExaminationResult">
+        <include refid="selectSysCcExaminationVo"/>
+        <where>
+             EXISTS (select 1 from sys_compulsory_course c where c.id= cc_id)
+            <if test="ccId != null "> and cc_id = #{ccId}</if>
+            <if test="ccExaminationPath != null  and ccExaminationPath != ''"> and cc_examination_path = #{ccExaminationPath}</if>
+        </where>
+    </select>
+
+    <select id="selectSysCcExaminationById" parameterType="Long" resultMap="SysCcExaminationResult">
+        <include refid="selectSysCcExaminationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysCcExamination" parameterType="SysCcExamination" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_cc_examination
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">cc_id,</if>
+            <if test="ccExaminationPath != null">cc_examination_path,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ccId != null">#{ccId},</if>
+            <if test="ccExaminationPath != null">#{ccExaminationPath},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCcExamination" parameterType="SysCcExamination">
+        update sys_cc_examination
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ccId != null">cc_id = #{ccId},</if>
+            <if test="ccExaminationPath != null">cc_examination_path = #{ccExaminationPath},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCcExaminationById" parameterType="Long">
+        delete from sys_cc_examination where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCcExaminationByIds" parameterType="String">
+        delete from sys_cc_examination where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

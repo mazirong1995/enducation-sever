@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.endcationproject.system.mapper.SysCcStuMapper">
+
+    <resultMap type="SysCcStu" id="SysCcStuResult">
+        <result property="id"    column="id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="stuIdName"    column="stu_id_name"    />
+        <result property="ccIds"    column="cc_ids"    />
+    </resultMap>
+
+    <sql id="selectSysCcStuVo">
+        select id, stu_id,(select a.nick_name from sys_user a where a.user_id = stu_id) as stu_id_name, cc_ids from sys_cc_stu
+    </sql>
+
+    <select id="selectSysCcStuList" parameterType="SysCcStu" resultMap="SysCcStuResult">
+        <include refid="selectSysCcStuVo"/>
+        <where>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="ccIds != null  and ccIds != ''"> and cc_ids = #{ccIds}</if>
+        </where>
+    </select>
+
+    <select id="selectSysCcStuData" parameterType="SysCcStu" resultMap="SysCcStuResult">
+        <include refid="selectSysCcStuVo"/>
+        <where>
+        <if test="stuIds !=null and stuIds.size()>0 ">and stu_id in
+            <foreach collection="stuIds" item="stuId" index="index" open="(" close=")" separator=",">
+                #{stuId}
+            </foreach>
+        </if>
+
+        </where>
+    </select>
+
+    <select id="selectSysCcStuById" parameterType="Long" resultMap="SysCcStuResult">
+        <include refid="selectSysCcStuVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getStuIds" parameterType="Long" resultType="String">
+        SELECT
+            b.user_id AS userId
+        FROM
+            sys_user b
+        <where>
+            <if test="userId != null">
+               and b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+            </if>
+            AND b.flag = '2'
+        </where>
+    </select>
+
+    <select id="getStuIdsForPD" parameterType="Long" resultType="map">
+        SELECT
+            b.user_id AS stuId,
+            b.nick_name AS userName
+        FROM
+            sys_user b
+        <where>
+            <if test="userId != null">
+                and b.dept_id = ( SELECT a.dept_id FROM sys_user a WHERE a.user_id = #{userId} LIMIT 1 )
+            </if>
+            AND b.flag = '2'
+        </where>
+    </select>
+
+
+    <insert id="insertSysCcStu" parameterType="SysCcStu" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_cc_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="ccIds != null">cc_ids,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="ccIds != null">#{ccIds},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCcStu" parameterType="SysCcStu">
+        update sys_cc_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="ccIds != null">cc_ids = #{ccIds},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCcStuById" parameterType="Long">
+        delete from sys_cc_stu where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCcStuByIds" parameterType="String">
+        delete from sys_cc_stu where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
