@@ -5,6 +5,15 @@ spring:
             enabled: true
             max-file-size: 100MB
             max-request-size: 100MB
+    tomcat:
+        accept-count: 1000
+        max-connections: 2000
+        max-threads: 300
+        min-spare-threads: 50
+        uri-encoding: UTF-8
+        max-http-post-size: 100MB
+        accesslog:
+            enabled: true
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver

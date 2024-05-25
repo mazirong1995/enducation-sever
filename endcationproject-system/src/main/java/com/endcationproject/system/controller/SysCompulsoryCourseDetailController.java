@@ -256,6 +256,7 @@ public class SysCompulsoryCourseDetailController extends BaseController {
             outputStream.close();
         }catch (Exception e){
             //log.error("文件传输错误", e);
+            e.printStackTrace();
             throw new RuntimeException("文件传输错误");
         } finally{
             if(outputStream != null){
@@ -263,6 +264,53 @@ public class SysCompulsoryCourseDetailController extends BaseController {
                     outputStream.close();
                 } catch (IOException e) {
                    // log.error("流释放错误", e);
+                }
+            }
+            if(fileInputStream != null){
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    //log.error("文件流释放错误", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 在线预览
+     * @param id
+     * @param request
+     * @param response
+     */
+    @GetMapping("/downLoad1")
+    @Anonymous
+    public void downLoad1(@RequestParam(value = "id") String id, HttpServletRequest request, HttpServletResponse response) {
+        //获取视频文件流
+        FileInputStream fileInputStream = null;
+        OutputStream outputStream = null;
+        try {
+            String path = sysCompulsoryCourseDetailService.selectSysCompulsoryCourseDetailById(Long.parseLong(id)).getCcdDataPath();
+            outputStream = response.getOutputStream();
+            fileInputStream = new FileInputStream(new File(path));
+            byte[] cache = new byte[1024];
+            response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
+            response.setHeader(HttpHeaders.CONTENT_LENGTH, fileInputStream.available()+"");
+            int flag;
+            while ((flag = fileInputStream.read(cache)) != -1) {
+                outputStream.write(cache, 0, flag);
+            }
+            outputStream.flush();
+            outputStream.close();
+        }catch (Exception e){
+            //log.error("文件传输错误", e);
+            e.printStackTrace();
+            throw new RuntimeException("文件传输错误");
+        } finally{
+            if(outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    // log.error("流释放错误", e);
                 }
             }
             if(fileInputStream != null){

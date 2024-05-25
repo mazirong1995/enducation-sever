@@ -34,8 +34,20 @@ public class SysCcExamination extends BaseEntity
     }
 
     /** 课程考试图片地址数组 */
-    @Excel(name = "课程考试图片地址数组")
+    @Excel(name = "课程考试文档")
     private String ccExaminationPath;
+
+    /** 课程考试图片地址数组 */
+    @Excel(name = "课程考试文档")
+    private String ccExaminationPathName;
+
+    public String getCcExaminationPathName() {
+        return ccExaminationPathName;
+    }
+
+    public void setCcExaminationPathName(String ccExaminationPathName) {
+        this.ccExaminationPathName = ccExaminationPathName;
+    }
 
     public void setId(Long id)
     {
