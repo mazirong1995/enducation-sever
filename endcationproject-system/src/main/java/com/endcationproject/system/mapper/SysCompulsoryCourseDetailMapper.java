@@ -67,4 +67,6 @@ public interface SysCompulsoryCourseDetailMapper
     Map<String, Object> getStuCourses(@Param("userId") Long userId);
 
     List<SysCompulsoryCourseDetail> list2(@Param("courses") List<String> courses);
+
+    int updatePathById(SysCompulsoryCourseDetail sysCompulsoryCourseDetail);
 }

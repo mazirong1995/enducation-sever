@@ -20,8 +20,7 @@ import com.endcationproject.system.service.ISysCompulsoryCourseDetailService;
  * @date 2024-02-26
  */
 @Service
-public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCourseDetailService
-{
+public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCourseDetailService {
     @Autowired
     private SysCompulsoryCourseDetailMapper sysCompulsoryCourseDetailMapper;
 
@@ -32,9 +31,14 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 课程详情
      */
     @Override
-    public SysCompulsoryCourseDetail selectSysCompulsoryCourseDetailById(Long id)
-    {
-        return sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailById(id);
+    public SysCompulsoryCourseDetail selectSysCompulsoryCourseDetailById(Long id) {
+        SysCompulsoryCourseDetail e = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailById(id);
+        String a = e.getCcdDataPath();
+        if(a.contains("&")){
+            String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+            e.setCcdDataPathName(filename);
+        }
+        return e;
     }
 
     /**
@@ -44,9 +48,17 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 课程详情
      */
     @Override
-    public List<SysCompulsoryCourseDetail> selectSysCompulsoryCourseDetailList(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
-    {
-        return sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
+    public List<SysCompulsoryCourseDetail> selectSysCompulsoryCourseDetailList(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
+        List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
+        sysCompulsoryCourseDetails.forEach(e->{
+            String a = e.getCcdDataPath();
+            if(a.contains("&")){
+                String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+                e.setCcdDataPathName(filename);
+            }
+
+        });
+        return sysCompulsoryCourseDetails;
     }
 
 
@@ -57,12 +69,11 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 课程详情
      */
     @Override
-    public List<TreeVo> selectSysCompulsoryCourseDetailList1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
-    {
+    public List<TreeVo> selectSysCompulsoryCourseDetailList1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
         Map<String, List<SysCompulsoryCourseDetail>> collect = sysCompulsoryCourseDetails.stream().collect(Collectors.groupingBy(SysCompulsoryCourseDetail::getCcName));
         List<TreeVo> result = new ArrayList<>();
-        collect.forEach((key,value)->{
+        collect.forEach((key, value) -> {
             TreeVo treeVo = new TreeVo();
             treeVo.setName(key);
             treeVo.setChildren(value);
@@ -70,6 +81,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
         });
         return result;
     }
+
     /**
      * 新增课程详情
      *
@@ -77,8 +89,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 结果
      */
     @Override
-    public int insertSysCompulsoryCourseDetail(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
-    {
+    public int insertSysCompulsoryCourseDetail(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         return sysCompulsoryCourseDetailMapper.insertSysCompulsoryCourseDetail(sysCompulsoryCourseDetail);
     }
 
@@ -89,8 +100,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 结果
      */
     @Override
-    public int updateSysCompulsoryCourseDetail(SysCompulsoryCourseDetail sysCompulsoryCourseDetail)
-    {
+    public int updateSysCompulsoryCourseDetail(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         return sysCompulsoryCourseDetailMapper.updateSysCompulsoryCourseDetail(sysCompulsoryCourseDetail);
     }
 
@@ -101,8 +111,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 结果
      */
     @Override
-    public int deleteSysCompulsoryCourseDetailByIds(Long[] ids)
-    {
+    public int deleteSysCompulsoryCourseDetailByIds(Long[] ids) {
         return sysCompulsoryCourseDetailMapper.deleteSysCompulsoryCourseDetailByIds(ids);
     }
 
@@ -113,8 +122,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      * @return 结果
      */
     @Override
-    public int deleteSysCompulsoryCourseDetailById(Long id)
-    {
+    public int deleteSysCompulsoryCourseDetailById(Long id) {
         return sysCompulsoryCourseDetailMapper.deleteSysCompulsoryCourseDetailById(id);
     }
 
@@ -133,7 +141,7 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
         List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.list2(Courses);
         Map<String, List<SysCompulsoryCourseDetail>> collect = sysCompulsoryCourseDetails.stream().collect(Collectors.groupingBy(SysCompulsoryCourseDetail::getCcName));
         List<TreeVo> result = new ArrayList<>();
-        collect.forEach((key,value)->{
+        collect.forEach((key, value) -> {
             TreeVo treeVo = new TreeVo();
             treeVo.setName(key);
             treeVo.setId(IdUtils.fastUUID());
@@ -147,5 +155,11 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     @Override
     public Map<String, Object> getStuCourses(Long userId) {
         return sysCompulsoryCourseDetailMapper.getStuCourses(userId);
+    }
+
+    @Override
+    public void updatePathById(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
+        sysCompulsoryCourseDetailMapper.updatePathById(sysCompulsoryCourseDetail);
+
     }
 }

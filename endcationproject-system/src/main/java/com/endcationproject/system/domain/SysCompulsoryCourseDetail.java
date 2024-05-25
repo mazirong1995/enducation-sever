@@ -38,6 +38,16 @@ public class SysCompulsoryCourseDetail extends BaseEntity
 
     private String ccName;
 
+    private String ccdDataPathName;
+
+    public String getCcdDataPathName() {
+        return ccdDataPathName;
+    }
+
+    public void setCcdDataPathName(String ccdDataPathName) {
+        this.ccdDataPathName = ccdDataPathName;
+    }
+
     public String getFlag() {
         return flag;
     }

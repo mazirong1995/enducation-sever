@@ -85,6 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+    <update id="updatePathById" parameterType="SysCompulsoryCourseDetail">
+        update sys_compulsory_course_detail
+        set ccd_data_path = #{ccdDataPath}
+        where id = #{id}
+    </update>
+
     <delete id="deleteSysCompulsoryCourseDetailById" parameterType="Long">
         delete from sys_compulsory_course_detail where id = #{id}
     </delete>

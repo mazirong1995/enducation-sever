@@ -82,4 +82,6 @@ public interface ISysCompulsoryCourseDetailService
     List<TreeVo> list2_1(List<String> Courses);
 
     Map<String, Object> getStuCourses(Long userId);
+
+    void updatePathById(SysCompulsoryCourseDetail sysCompulsoryCourseDetail);
 }
