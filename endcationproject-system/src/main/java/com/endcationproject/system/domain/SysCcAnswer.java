@@ -46,6 +46,16 @@ public class SysCcAnswer extends BaseEntity
     private String stuIdName;
     private String teaIdName;
 
+    private String anPathName;
+
+    public String getAnPathName() {
+        return anPathName;
+    }
+
+    public void setAnPathName(String anPathName) {
+        this.anPathName = anPathName;
+    }
+
     public String getCcIdName() {
         return ccIdName;
     }

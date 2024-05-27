@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,16 @@ public class SysCcExaminationController extends BaseController {
         startPage();
         List<SysCcExamination> list = sysCcExaminationService.selectSysCcExaminationList(sysCcExamination);
         return getDataTable(list);
+    }
+
+    /**
+     * 根据登陆人查询考试名称列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:examination:query')")
+    @GetMapping("/pullDownExaminatName")
+    public AjaxResult pullDownExaminatName() {
+        List<Map<String, Object>> result = sysCcExaminationService.pullDownExaminatName();
+        return success(result);
     }
 
     /**
@@ -148,12 +159,18 @@ public class SysCcExaminationController extends BaseController {
         FileInputStream fileInputStream = null;
         OutputStream outputStream = null;
         try {
-            String path = sysCcExaminationService.selectSysCcExaminationById(Long.parseLong(id)).getCcExaminationPath();
+            SysCcExamination sysCcExamination = sysCcExaminationService.selectSysCcExaminationById(Long.parseLong(id));
+            String path = sysCcExamination.getCcExaminationPath();
+            String fileName = sysCcExamination.getCcExaminationPathName();
+            String fileExt = path.substring(path.lastIndexOf(".") + 1)
+                    .toLowerCase();
             outputStream = response.getOutputStream();
             fileInputStream = new FileInputStream(new File(path));
             byte[] cache = new byte[1024];
             response.setHeader(HttpHeaders.CONTENT_TYPE, "application/msword");
             response.setHeader(HttpHeaders.CONTENT_LENGTH, fileInputStream.available()+"");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode((fileName+"."+fileExt),"UTF-8"));
             int flag;
             while ((flag = fileInputStream.read(cache)) != -1) {
                 outputStream.write(cache, 0, flag);
@@ -162,6 +179,7 @@ public class SysCcExaminationController extends BaseController {
             outputStream.close();
         }catch (Exception e){
             //log.error("文件传输错误", e);
+            e.printStackTrace();
             throw new RuntimeException("文件传输错误");
         } finally{
             if(outputStream != null){

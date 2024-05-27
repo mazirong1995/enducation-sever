@@ -36,6 +36,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <select id="selectSysCcAnswerListForStu" parameterType="SysCcAnswer" resultMap="SysCcAnswerResult">
+        <include refid="selectSysCcAnswerVo"/>
+        <where>
+            <if test="ccId != null "> and cc_id = #{ccId}</if>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="teaId != null "> and tea_id = #{teaId}</if>
+            <if test="anPath != null  and anPath != ''"> and an_path = #{anPath}</if>
+            <if test="anGrade != null  and anGrade != ''"> and an_grade = #{anGrade}</if>
+            <if test="anRemark != null  and anRemark != ''"> and an_remark = #{anRemark}</if>
+        </where>
+    </select>
+
     <select id="selectSysCcAnswerById" parameterType="Long" resultMap="SysCcAnswerResult">
         <include refid="selectSysCcAnswerVo"/>
         where id = #{id}

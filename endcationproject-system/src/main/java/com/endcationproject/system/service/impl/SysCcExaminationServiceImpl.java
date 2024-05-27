@@ -1,7 +1,11 @@
 package com.endcationproject.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import com.endcationproject.common.utils.SecurityUtils;
+import com.endcationproject.system.service.ISysCompulsoryCourseDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.endcationproject.system.mapper.SysCcExaminationMapper;
@@ -18,6 +22,8 @@ import com.endcationproject.system.service.ISysCcExaminationService;
 public class SysCcExaminationServiceImpl implements ISysCcExaminationService {
     @Autowired
     private SysCcExaminationMapper sysCcExaminationMapper;
+    @Autowired
+    private ISysCompulsoryCourseDetailService sysCompulsoryCourseDetailService;
 
     /**
      * 查询课程考试题库
@@ -97,5 +103,22 @@ public class SysCcExaminationServiceImpl implements ISysCcExaminationService {
     @Override
     public int deleteSysCcExaminationById(Long id) {
         return sysCcExaminationMapper.deleteSysCcExaminationById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> pullDownExaminatName() {
+        Long userId = SecurityUtils.getUserId();
+        //获取学生选择的课程id
+        Map<String, Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
+        String[] split;
+        if (result != null) {
+            Object ccIds = result.get("ccIds");
+            String s = String.valueOf(ccIds).replace("[", "").replace("]", "");
+           split = s.split(",");
+        }else{
+            return null;
+        }
+        List<Map<String, Object>> pullDown = sysCcExaminationMapper.selectExaminationByUser(Arrays.asList(split));
+        return pullDown;
     }
 }

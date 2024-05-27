@@ -6,15 +6,15 @@ import com.endcationproject.system.domain.vo.TreeVo;
 
 /**
  * 课程考试答案库Service接口
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
-public interface ISysCcAnswerService 
+public interface ISysCcAnswerService
 {
     /**
      * 查询课程考试答案库
-     * 
+     *
      * @param id 课程考试答案库主键
      * @return 课程考试答案库
      */
@@ -22,7 +22,7 @@ public interface ISysCcAnswerService
 
     /**
      * 查询课程考试答案库列表
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 课程考试答案库集合
      */
@@ -32,7 +32,7 @@ public interface ISysCcAnswerService
 
     /**
      * 新增课程考试答案库
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 结果
      */
@@ -40,7 +40,7 @@ public interface ISysCcAnswerService
 
     /**
      * 修改课程考试答案库
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 结果
      */
@@ -48,7 +48,7 @@ public interface ISysCcAnswerService
 
     /**
      * 批量删除课程考试答案库
-     * 
+     *
      * @param ids 需要删除的课程考试答案库主键集合
      * @return 结果
      */
@@ -56,9 +56,11 @@ public interface ISysCcAnswerService
 
     /**
      * 删除课程考试答案库信息
-     * 
+     *
      * @param id 课程考试答案库主键
      * @return 结果
      */
     public int deleteSysCcAnswerById(Long id);
+
+    List<SysCcAnswer> selectSysCcAnswerListForStu(SysCcAnswer sysCcAnswer);
 }

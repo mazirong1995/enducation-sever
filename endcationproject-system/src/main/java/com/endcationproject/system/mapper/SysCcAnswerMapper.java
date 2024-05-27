@@ -5,15 +5,15 @@ import com.endcationproject.system.domain.SysCcAnswer;
 
 /**
  * 课程考试答案库Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2024-02-26
  */
-public interface SysCcAnswerMapper 
+public interface SysCcAnswerMapper
 {
     /**
      * 查询课程考试答案库
-     * 
+     *
      * @param id 课程考试答案库主键
      * @return 课程考试答案库
      */
@@ -21,7 +21,7 @@ public interface SysCcAnswerMapper
 
     /**
      * 查询课程考试答案库列表
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 课程考试答案库集合
      */
@@ -29,7 +29,7 @@ public interface SysCcAnswerMapper
 
     /**
      * 新增课程考试答案库
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface SysCcAnswerMapper
 
     /**
      * 修改课程考试答案库
-     * 
+     *
      * @param sysCcAnswer 课程考试答案库
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface SysCcAnswerMapper
 
     /**
      * 删除课程考试答案库
-     * 
+     *
      * @param id 课程考试答案库主键
      * @return 结果
      */
@@ -53,9 +53,11 @@ public interface SysCcAnswerMapper
 
     /**
      * 批量删除课程考试答案库
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
     public int deleteSysCcAnswerByIds(Long[] ids);
+
+    List<SysCcAnswer> selectSysCcAnswerListForStu(SysCcAnswer sysCcAnswer);
 }

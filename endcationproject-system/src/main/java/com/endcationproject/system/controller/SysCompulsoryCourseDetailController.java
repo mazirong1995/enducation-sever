@@ -72,7 +72,7 @@ public class SysCompulsoryCourseDetailController extends BaseController {
         List<TreeVo> list = new ArrayList<>();
         if (result != null) {
             Object ccIds = result.get("ccIds");
-            String s = String.valueOf(ccIds);
+            String s = String.valueOf(ccIds).replace("[","").replace("]","");
             String[] split = s.split(",");
             list = sysCompulsoryCourseDetailService.list2_1(Arrays.asList(split));
         }

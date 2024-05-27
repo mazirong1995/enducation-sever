@@ -56,7 +56,6 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
                 String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
                 e.setCcdDataPathName(filename);
             }
-
         });
         return sysCompulsoryCourseDetails;
     }
@@ -139,6 +138,14 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     @Override
     public List<TreeVo> list2_1(List<String> Courses) {
         List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.list2(Courses);
+        sysCompulsoryCourseDetails.forEach(e->{
+            String a = e.getCcdDataPath();
+            if(a.contains("&")){
+                String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+                e.setCcdDataPathName(filename);
+            }
+        });
+
         Map<String, List<SysCompulsoryCourseDetail>> collect = sysCompulsoryCourseDetails.stream().collect(Collectors.groupingBy(SysCompulsoryCourseDetail::getCcName));
         List<TreeVo> result = new ArrayList<>();
         collect.forEach((key, value) -> {

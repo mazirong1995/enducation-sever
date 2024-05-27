@@ -9,10 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ccId"    column="cc_id"    />
         <result property="ccName"    column="cc_name"    />
         <result property="ccExaminationPath"    column="cc_examination_path"    />
+        <result property="ccExaminationName"    column="cc_examination_name"    />
     </resultMap>
 
     <sql id="selectSysCcExaminationVo">
-        select id, cc_id,(select scc.cc_name from sys_compulsory_course scc where scc.id =cc_id) as cc_name, cc_examination_path from sys_cc_examination
+        select id, cc_id,(select scc.cc_name from sys_compulsory_course scc where scc.id =cc_id) as cc_name, cc_examination_path,cc_examination_name from sys_cc_examination
     </sql>
 
     <select id="selectSysCcExaminationList" parameterType="SysCcExamination" resultMap="SysCcExaminationResult">
@@ -21,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              EXISTS (select 1 from sys_compulsory_course c where c.id= cc_id)
             <if test="ccId != null "> and cc_id = #{ccId}</if>
             <if test="ccExaminationPath != null  and ccExaminationPath != ''"> and cc_examination_path = #{ccExaminationPath}</if>
+            <if test="ccExaminationName != null  and ccExaminationName != ''"> and cc_examination_name = #{ccExaminationName}</if>
         </where>
     </select>
 
@@ -29,15 +31,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectExaminationByUser" parameterType="arraylist" resultType="map">
+        select a.id as ccId,a.cc_examination_name as ccName from sys_cc_examination a
+        where EXISTS (select 1 from sys_compulsory_course c where c.id=a.cc_id)
+        <if test="courses != null and courses.size()>0">
+            and a.cc_id in
+            <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
+                #{course}
+            </foreach>
+        </if>
+    </select>
+
     <insert id="insertSysCcExamination" parameterType="SysCcExamination" useGeneratedKeys="true" keyProperty="id">
         insert into sys_cc_examination
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ccId != null">cc_id,</if>
             <if test="ccExaminationPath != null">cc_examination_path,</if>
+            <if test="ccExaminationName != null">cc_examination_name,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ccId != null">#{ccId},</if>
             <if test="ccExaminationPath != null">#{ccExaminationPath},</if>
+            <if test="ccExaminationName != null">#{ccExaminationName},</if>
          </trim>
     </insert>
 
@@ -46,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="ccId != null">cc_id = #{ccId},</if>
             <if test="ccExaminationPath != null">cc_examination_path = #{ccExaminationPath},</if>
+            <if test="ccExaminationName != null">cc_examination_name = #{ccExaminationName},</if>
         </trim>
         where id = #{id}
     </update>
