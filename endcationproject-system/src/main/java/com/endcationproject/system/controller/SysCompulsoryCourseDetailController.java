@@ -116,6 +116,16 @@ public class SysCompulsoryCourseDetailController extends BaseController {
     }
 
     /**
+     * 查询学生已选的课程下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/pullDownCourseForSelect")
+    public AjaxResult pullDownCourseForSelect() {
+        List<Map<String, Object>> result = sysCompulsoryCourseDetailService.pullDownCourseForSelect();
+        return success(result);
+    }
+
+    /**
      * 导出课程详情列表
      */
     @PreAuthorize("@ss.hasPermi('system:detail:query')")

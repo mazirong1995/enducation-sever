@@ -62,11 +62,15 @@ public interface SysCompulsoryCourseDetailMapper
      */
     public int deleteSysCompulsoryCourseDetailByIds(Long[] ids);
 
-    List<Map<String, Object>> pullDownCourse(@Param("flag") String flag,@Param("userId") String userId);
+    List<Map<String, Object>> pullDownCourse(@Param("flag") String flag, @Param("userId") String userId);
 
     Map<String, Object> getStuCourses(@Param("userId") Long userId);
 
     List<SysCompulsoryCourseDetail> list2(@Param("courses") List<String> courses);
 
     int updatePathById(SysCompulsoryCourseDetail sysCompulsoryCourseDetail);
+
+    List<Map<String, Object>> selectStuSelectCourse(String userId);
+
+    List<Map<String, Object>> list2ForStuSelect(@Param("courses") List<String> courses);
 }

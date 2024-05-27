@@ -62,14 +62,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <insert id="insertSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail" useGeneratedKeys="true" keyProperty="id">
+    <select id="list2ForStuSelect" parameterType='arraylist' resultType="map">
+        select b.id as ccId,b.cc_name as ccName from sys_compulsory_course b
+        <where>
+            <if test="courses != null and courses.size()>0">
+                and b.id in
+                <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
+                    #{course}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectStuSelectCourse" parameterType='string' resultType="map">
+       select a.cc_ids as courses from sys_cc_stu a where a.stu_id = '100'
+    </select>
+
+
+    <insert id="insertSysCompulsoryCourseDetail" parameterType="SysCompulsoryCourseDetail" useGeneratedKeys="true"
+            keyProperty="id">
         insert into sys_compulsory_course_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ccId != null">cc_id,</if>
             <if test="ccdName != null">ccd_name,</if>
             <if test="ccdDataPath != null">ccd_data_path,</if>
             <if test="ccdRemark != null">ccd_remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ccId != null">#{ccId},</if>
             <if test="ccdName != null">#{ccdName},</if>

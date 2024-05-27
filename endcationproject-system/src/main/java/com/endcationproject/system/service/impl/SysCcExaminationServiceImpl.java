@@ -51,10 +51,23 @@ public class SysCcExaminationServiceImpl implements ISysCcExaminationService {
     @Override
     public List<SysCcExamination> selectSysCcExaminationList(SysCcExamination sysCcExamination) {
         List<SysCcExamination> sysCcExaminations = sysCcExaminationMapper.selectSysCcExaminationList(sysCcExamination);
-        sysCcExaminations.forEach(e->{
+        sysCcExaminations.forEach(e -> {
             String a = e.getCcExaminationPath();
-            if(a.contains("&")){
-                String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+            if (a.contains("&")) {
+                String filename = a.substring(a.indexOf("&") + 1, a.lastIndexOf("&"));
+                e.setCcExaminationPathName(filename);
+            }
+        });
+        return sysCcExaminations;
+    }
+
+    @Override
+    public List<SysCcExamination> selectSysCcExaminationList1(List<String> asList) {
+        List<SysCcExamination> sysCcExaminations = sysCcExaminationMapper.selectSysCcExaminationList1(asList);
+        sysCcExaminations.forEach(e -> {
+            String a = e.getCcExaminationPath();
+            if (a.contains("&")) {
+                String filename = a.substring(a.indexOf("&") + 1, a.lastIndexOf("&"));
                 e.setCcExaminationPathName(filename);
             }
         });

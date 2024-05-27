@@ -19,10 +19,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSysCcExaminationList" parameterType="SysCcExamination" resultMap="SysCcExaminationResult">
         <include refid="selectSysCcExaminationVo"/>
         <where>
-             EXISTS (select 1 from sys_compulsory_course c where c.id= cc_id)
-            <if test="ccId != null "> and cc_id = #{ccId}</if>
-            <if test="ccExaminationPath != null  and ccExaminationPath != ''"> and cc_examination_path = #{ccExaminationPath}</if>
-            <if test="ccExaminationName != null  and ccExaminationName != ''"> and cc_examination_name = #{ccExaminationName}</if>
+            EXISTS (select 1 from sys_compulsory_course c where c.id= cc_id)
+            <if test="ccId != null ">and cc_id = #{ccId}</if>
+            <if test="ccExaminationPath != null  and ccExaminationPath != ''">and cc_examination_path =
+                #{ccExaminationPath}
+            </if>
+            <if test="ccExaminationName != null  and ccExaminationName != ''">and cc_examination_name =
+                #{ccExaminationName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSysCcExaminationList1" parameterType="arraylist" resultMap="SysCcExaminationResult">
+        <include refid="selectSysCcExaminationVo"/>
+        <where>
+            EXISTS (select 1 from sys_compulsory_course c where c.id= cc_id)
+            <if test="courses != null and courses.size()>0">
+                and cc_id in
+                <foreach collection="courses" item="course" index="index" open="(" close=")" separator=",">
+                    #{course}
+                </foreach>
+            </if>
         </where>
     </select>
 

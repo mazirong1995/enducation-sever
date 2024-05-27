@@ -1,18 +1,19 @@
 package com.endcationproject.system.service.impl;
 
+import com.endcationproject.common.utils.SecurityUtils;
+import com.endcationproject.common.utils.uuid.IdUtils;
+import com.endcationproject.system.domain.SysCompulsoryCourseDetail;
+import com.endcationproject.system.domain.vo.TreeVo;
+import com.endcationproject.system.mapper.SysCompulsoryCourseDetailMapper;
+import com.endcationproject.system.service.ISysCompulsoryCourseDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.endcationproject.common.utils.SecurityUtils;
-import com.endcationproject.common.utils.uuid.IdUtils;
-import com.endcationproject.system.domain.vo.TreeVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.endcationproject.system.mapper.SysCompulsoryCourseDetailMapper;
-import com.endcationproject.system.domain.SysCompulsoryCourseDetail;
-import com.endcationproject.system.service.ISysCompulsoryCourseDetailService;
 
 /**
  * 课程详情Service业务层处理
@@ -35,8 +36,8 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     public SysCompulsoryCourseDetail selectSysCompulsoryCourseDetailById(Long id) {
         SysCompulsoryCourseDetail e = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailById(id);
         String a = e.getCcdDataPath();
-        if(a.contains("&")){
-            String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+        if (a.contains("&")) {
+            String filename = a.substring(a.indexOf("&") + 1, a.lastIndexOf("&"));
             e.setCcdDataPathName(filename);
         }
         return e;
@@ -52,10 +53,10 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     public List<SysCompulsoryCourseDetail> selectSysCompulsoryCourseDetailList(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails =
                 sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
-        sysCompulsoryCourseDetails.forEach(e->{
+        sysCompulsoryCourseDetails.forEach(e -> {
             String a = e.getCcdDataPath();
-            if(a.contains("&")){
-                String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+            if (a.contains("&")) {
+                String filename = a.substring(a.indexOf("&") + 1, a.lastIndexOf("&"));
                 e.setCcdDataPathName(filename);
             }
         });
@@ -130,8 +131,8 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     @Override
     public List<Map<String, Object>> pullDownCourse(String flag) {
         String userId = SecurityUtils.getUserId().toString();
-        if("1".equals(userId)) userId = null;
-        return sysCompulsoryCourseDetailMapper.pullDownCourse(flag,userId);
+        if ("1".equals(userId)) userId = null;
+        return sysCompulsoryCourseDetailMapper.pullDownCourse(flag, userId);
     }
 
     @Override
@@ -142,10 +143,10 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     @Override
     public List<TreeVo> list2_1(List<String> Courses) {
         List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.list2(Courses);
-        sysCompulsoryCourseDetails.forEach(e->{
+        sysCompulsoryCourseDetails.forEach(e -> {
             String a = e.getCcdDataPath();
-            if(a.contains("&")){
-                String filename = a.substring(a.indexOf("&")+1,a.lastIndexOf("&"));
+            if (a.contains("&")) {
+                String filename = a.substring(a.indexOf("&") + 1, a.lastIndexOf("&"));
                 e.setCcdDataPathName(filename);
             }
         });
@@ -172,5 +173,21 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
     public void updatePathById(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         sysCompulsoryCourseDetailMapper.updatePathById(sysCompulsoryCourseDetail);
 
+    }
+
+    @Override
+    public List<Map<String, Object>> pullDownCourseForSelect() {
+        String userId = SecurityUtils.getUserId().toString();
+        List<Map<String, Object>> data =
+                sysCompulsoryCourseDetailMapper.selectStuSelectCourse(userId);
+        if (data.size() > 0) {
+            Map<String, Object> stringObjectMap = data.get(0);
+            String courses = stringObjectMap.get("courses").toString();
+            courses = courses.replace("[", "").replace("]", "");
+            String[] split = courses.split(",");
+            List<Map<String, Object>> result = sysCompulsoryCourseDetailMapper.list2ForStuSelect(Arrays.asList(split));
+            return result;
+        }
+        return null;
     }
 }

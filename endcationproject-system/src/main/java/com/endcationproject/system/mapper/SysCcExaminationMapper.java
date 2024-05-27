@@ -30,6 +30,8 @@ public interface SysCcExaminationMapper
      */
     public List<SysCcExamination> selectSysCcExaminationList(SysCcExamination sysCcExamination);
 
+    public List<SysCcExamination> selectSysCcExaminationList1(@Param("courses") List<String> courses);
+
     /**
      * 新增课程考试题库
      *

@@ -62,4 +62,6 @@ public interface ISysCcExaminationService
     public int deleteSysCcExaminationById(Long id);
 
     List<Map<String, Object>> pullDownExaminatName();
+
+    List<SysCcExamination> selectSysCcExaminationList1(List<String> asList);
 }

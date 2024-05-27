@@ -5,14 +5,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.endcationproject.common.annotation.Anonymous;
+import com.endcationproject.common.utils.SecurityUtils;
+import com.endcationproject.system.domain.SysCompulsoryCourseDetail;
+import com.endcationproject.system.domain.vo.TreeVo;
+import com.endcationproject.system.service.ISysCompulsoryCourseDetailService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class SysCcExaminationController extends BaseController {
     @Autowired
     private ISysCcExaminationService sysCcExaminationService;
+    @Autowired
+    private ISysCompulsoryCourseDetailService sysCompulsoryCourseDetailService;
 
     /**
      * 查询课程考试题库列表
@@ -47,6 +50,56 @@ public class SysCcExaminationController extends BaseController {
     public TableDataInfo list(SysCcExamination sysCcExamination) {
         startPage();
         List<SysCcExamination> list = sysCcExaminationService.selectSysCcExaminationList(sysCcExamination);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询学生已选课程下载题库
+     */
+    @PreAuthorize("@ss.hasPermi('system:detail:query')")
+    @GetMapping("/list3")
+    public TableDataInfo list3(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
+        //根据学生id，查询已经选的课程
+        Map<String, Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
+        startPage();
+        List<SysCcExamination> list = new ArrayList<>();
+        if (result != null) {
+            if (sysCompulsoryCourseDetail.getCcId() != null) {
+                List<String> datas = new ArrayList<>();
+                datas.add(sysCompulsoryCourseDetail.getCcId().toString());
+                list = sysCcExaminationService.selectSysCcExaminationList1(datas);
+            } else {
+                Object ccIds = result.get("ccIds");
+                String s = String.valueOf(ccIds).replace("[", "").replace("]", "");
+                String[] split = s.split(",");
+                list = sysCcExaminationService.selectSysCcExaminationList1(Arrays.asList(split));
+            }
+        }
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询课程考试题库列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:examination:query')")
+    @GetMapping("/list1")
+    public TableDataInfo list1(SysCcExamination sysCcExamination) {
+        //根据学生id，查询已经选的课程
+        Map<String, Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
+        List<SysCcExamination> list = new ArrayList<>();
+        startPage();
+        if (result != null) {
+            if (sysCcExamination.getCcId() != null) {
+                List<String> datas = new ArrayList<>();
+                datas.add(sysCcExamination.getCcId().toString());
+                list = sysCcExaminationService.selectSysCcExaminationList1(datas);
+            } else {
+                Object ccIds = result.get("ccIds");
+                String s = String.valueOf(ccIds).replace("[", "").replace("]", "");
+                String[] split = s.split(",");
+                list = sysCcExaminationService.selectSysCcExaminationList1(Arrays.asList(split));
+            }
+        }
         return getDataTable(list);
     }
 
