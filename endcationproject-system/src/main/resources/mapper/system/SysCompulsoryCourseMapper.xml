@@ -18,7 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysCompulsoryCourseVo">
-        select id, cc_name, cc_teacher,(select su.nick_name from sys_user su where su.user_id =cc_teacher) as ccTeacherName,
+        select id, cc_name, cc_teacher,
+        (select su.nick_name from sys_user su where su.user_id =cc_teacher) as ccTeacherName,
         cc_duration,
         date_format(cc_start_time,'%Y-%m-%d %H:%I:%s') as cc_start_time,
         date_format(cc_end_time,'%Y-%m-%d %H:%I:%s') as cc_end_time,

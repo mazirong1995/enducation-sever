@@ -48,6 +48,9 @@ public class SysCompulsoryCourseController extends BaseController {
     public TableDataInfo list(SysCompulsoryCourse sysCompulsoryCourse) {
         startPage();
         sysCompulsoryCourse.setCcFlag("0");
+        if(!"1".equals(SecurityUtils.getUserId().toString())){
+            sysCompulsoryCourse.setCcTeacher(SecurityUtils.getUserId().toString());
+        }
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourseList(sysCompulsoryCourse);
         return getDataTable(list);
     }
@@ -60,6 +63,9 @@ public class SysCompulsoryCourseController extends BaseController {
     public TableDataInfo list1(SysCompulsoryCourse sysCompulsoryCourse) {
         startPage();
         sysCompulsoryCourse.setCcFlag("1");
+        if(!"1".equals(SecurityUtils.getUserId().toString())){
+            sysCompulsoryCourse.setCcTeacher(SecurityUtils.getUserId().toString());
+        }
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourseList(sysCompulsoryCourse);
         return getDataTable(list);
     }
@@ -151,6 +157,34 @@ public class SysCompulsoryCourseController extends BaseController {
         SysUser sysUser = sysUserService.selectUserById(Long.parseLong(userId));
         if(sysUser.getFlag()!="1")userId=null;
         List<Map<String, Object>> result = sysCompulsoryCourseService.getPullDown(userId);
+        return success(result);
+    }
+
+    /**
+     * 课程教师下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:course:query')")
+    @GetMapping(value = {"/pullDownNew"})
+    public AjaxResult getPullDownNew() {
+        String userId = SecurityUtils.getUserId().toString();
+        if("1".equals(userId)){
+            userId = null;
+        }
+        List<Map<String, Object>> result = sysCompulsoryCourseService.getPullDown(userId);
+        return success(result);
+    }
+
+    /**
+     * 学生自己选课的教师下拉
+     */
+    @PreAuthorize("@ss.hasPermi('system:course:query')")
+    @GetMapping(value = {"/pullDownTeacherForStu"})
+    public AjaxResult pullDownTeacherForStu() {
+        String userId = SecurityUtils.getUserId().toString();
+        if("1".equals(userId)){
+            userId = null;
+        }
+        List<Map<String, Object>> result = sysCompulsoryCourseService.getPullDownForStu(userId);
         return success(result);
     }
 }
