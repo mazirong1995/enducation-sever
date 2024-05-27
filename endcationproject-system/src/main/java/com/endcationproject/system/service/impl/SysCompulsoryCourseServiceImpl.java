@@ -96,9 +96,19 @@ public class SysCompulsoryCourseServiceImpl implements ISysCompulsoryCourseServi
         return sysCompulsoryCourseMapper.getPullDownForStu(uesrId);
     }
 
+    /**
+     *查询同一年级的课程
+     * @param userId
+     * @return
+     */
     @Override
     public List<String> getCourseIds(Long userId) {
         return sysCompulsoryCourseMapper.getCourseIds(userId);
+    }
+
+    @Override
+    public List<String> getCourseIdsNew(Long userId) {
+        return sysCompulsoryCourseMapper.getCourseIdsNew(userId);
     }
 
     @Override

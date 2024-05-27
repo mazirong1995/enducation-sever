@@ -68,5 +68,7 @@ public interface SysCompulsoryCourseMapper
 
     List<String> getCourseIds(@Param("uesrId") Long userId);
 
+    List<String> getCourseIdsNew(@Param("uesrId") Long userId);
+
     List<SysCompulsoryCourse> selectSysCompulsoryCourses(@Param("courseIds") List<String> courseIds);
 }

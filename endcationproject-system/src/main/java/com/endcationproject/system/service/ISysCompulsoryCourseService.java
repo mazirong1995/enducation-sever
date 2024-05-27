@@ -67,5 +67,7 @@ public interface ISysCompulsoryCourseService
 
     List<String> getCourseIds(Long userId);
 
+    List<String> getCourseIdsNew(Long userId);
+
     List<SysCompulsoryCourse> selectSysCompulsoryCourses(List<String> courseIds);
 }

@@ -130,8 +130,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         limit 1 ))
                 )
                 and b.flag = '1')
+    </select>
 
-
+    <select id="getCourseIdsNew" parameterType="Long" resultType="String">
+        select
+            c.id as couserId
+        from
+            sys_compulsory_course c
+        where
+            c.cc_teacher in (
+            select
+                b.user_id as userId
+            from
+                sys_user b
+            where
+                b.dept_id in (
+                    select
+                        a.dept_id
+                    from
+                        sys_user a
+                    where
+                        a.user_id = #{uesrId}
+                )
+                and b.flag = '1')
     </select>
 
     <insert id="insertSysCompulsoryCourse" parameterType="SysCompulsoryCourse" useGeneratedKeys="true" keyProperty="id">

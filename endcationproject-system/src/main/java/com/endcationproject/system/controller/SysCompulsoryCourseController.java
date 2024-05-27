@@ -77,7 +77,7 @@ public class SysCompulsoryCourseController extends BaseController {
     @GetMapping("/list2")
     public TableDataInfo list2(SysCompulsoryCourse sysCompulsoryCourse) {
         //根据学生id查询同一年级的教师id，查询相关课程id
-        List<String> courseIds = sysCompulsoryCourseService.getCourseIds(SecurityUtils.getUserId());
+        List<String> courseIds = sysCompulsoryCourseService.getCourseIdsNew(SecurityUtils.getUserId());
         startPage();
         //sysCompulsoryCourse.setCcFlag("1");
         List<SysCompulsoryCourse> list = sysCompulsoryCourseService.selectSysCompulsoryCourses(courseIds);
