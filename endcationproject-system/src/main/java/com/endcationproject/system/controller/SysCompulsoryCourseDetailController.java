@@ -44,6 +44,9 @@ public class SysCompulsoryCourseDetailController extends BaseController {
     public TableDataInfo list(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         startPage();
         sysCompulsoryCourseDetail.setFlag("0");
+        String userId = SecurityUtils.getUserId().toString();
+        if("1".equals(userId)) userId = null;
+        sysCompulsoryCourseDetail.setUserId(userId);
         List<SysCompulsoryCourseDetail> list = sysCompulsoryCourseDetailService.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
         return getDataTable(list);
     }
@@ -56,6 +59,9 @@ public class SysCompulsoryCourseDetailController extends BaseController {
     public TableDataInfo list1(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
         startPage();
         sysCompulsoryCourseDetail.setFlag("1");
+        String userId = SecurityUtils.getUserId().toString();
+        if("1".equals(userId)) userId = null;
+        sysCompulsoryCourseDetail.setUserId(userId);
         List<SysCompulsoryCourseDetail> list = sysCompulsoryCourseDetailService.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
         return getDataTable(list);
     }

@@ -107,7 +107,6 @@ public class SysCcExaminationServiceImpl implements ISysCcExaminationService {
 
     @Override
     public List<Map<String, Object>> pullDownExaminatName() {
-        Long userId = SecurityUtils.getUserId();
         //获取学生选择的课程id
         Map<String, Object> result = sysCompulsoryCourseDetailService.getStuCourses(SecurityUtils.getUserId());
         String[] split;

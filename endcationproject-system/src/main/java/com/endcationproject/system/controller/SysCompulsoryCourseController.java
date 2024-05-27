@@ -147,8 +147,8 @@ public class SysCompulsoryCourseController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:course:query')")
     @GetMapping(value = {"/pullDown"})
     public AjaxResult getPullDown() {
-        Long userId = getLoginUser().getUserId();
-        SysUser sysUser = sysUserService.selectUserById(userId);
+        String userId = getLoginUser().getUserId().toString();
+        SysUser sysUser = sysUserService.selectUserById(Long.parseLong(userId));
         if(sysUser.getFlag()!="1")userId=null;
         List<Map<String, Object>> result = sysCompulsoryCourseService.getPullDown(userId);
         return success(result);

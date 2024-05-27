@@ -40,6 +40,16 @@ public class SysCompulsoryCourseDetail extends BaseEntity
 
     private String ccdDataPathName;
 
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getCcdDataPathName() {
         return ccdDataPathName;
     }

@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          order by cc_remark
     </select>
 
-    <select id="getPullDown" parameterType="Long" resultType="map">
+    <select id="getPullDown" parameterType="String" resultType="map">
        SELECT
             a.user_id as ccTeacher,
             CONCAT( a.nick_name, '(', b.dept_name, ')' ) AS ccTeacherName
@@ -72,6 +72,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and a.del_flag = '0'
         <if test="uesrId != null"> and a.user_id = #{uesrId}</if>
          order by a.dept_id
+    </select>
+
+    <select id="getPullDownForStu" parameterType="String" resultType="map">
+        SELECT
+        a.user_id as ccTeacher,
+        CONCAT( a.nick_name, '(', b.dept_name, ')' ) AS ccTeacherName
+        FROM
+        sys_user a
+        LEFT JOIN sys_dept b ON a.dept_id = b.dept_id
+        WHERE
+        a.dept_id IS NOT NULL
+        and a.flag = '1'
+        and a.del_flag = '0'
+        <if test="uesrId != null"> and b.dept_id IN (
+            SELECT
+            a.dept_id
+            FROM
+            sys_user a
+            WHERE
+            a.user_id = #{uesrId})</if>
+        order by a.dept_id
     </select>
 
     <select id="getCourseIds" parameterType="Long" resultType="String">

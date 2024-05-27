@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.endcationproject.common.utils.SecurityUtils;
 import com.endcationproject.common.utils.uuid.IdUtils;
 import com.endcationproject.system.domain.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
      */
     @Override
     public List<SysCompulsoryCourseDetail> selectSysCompulsoryCourseDetailList(SysCompulsoryCourseDetail sysCompulsoryCourseDetail) {
-        List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails = sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
+        List<SysCompulsoryCourseDetail> sysCompulsoryCourseDetails =
+                sysCompulsoryCourseDetailMapper.selectSysCompulsoryCourseDetailList(sysCompulsoryCourseDetail);
         sysCompulsoryCourseDetails.forEach(e->{
             String a = e.getCcdDataPath();
             if(a.contains("&")){
@@ -127,7 +129,9 @@ public class SysCompulsoryCourseDetailServiceImpl implements ISysCompulsoryCours
 
     @Override
     public List<Map<String, Object>> pullDownCourse(String flag) {
-        return sysCompulsoryCourseDetailMapper.pullDownCourse(flag);
+        String userId = SecurityUtils.getUserId().toString();
+        if("1".equals(userId)) userId = null;
+        return sysCompulsoryCourseDetailMapper.pullDownCourse(flag,userId);
     }
 
     @Override

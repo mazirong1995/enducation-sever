@@ -18,11 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectSysCompulsoryCourseDetailList" parameterType="SysCompulsoryCourseDetail" resultMap="SysCompulsoryCourseDetailResult">
-        select a.id, a.cc_id, a.ccd_name, a.ccd_data_path, a.ccd_remark,b.cc_name from sys_compulsory_course_detail a
+        select a.id, a.cc_id, a.ccd_name, a.ccd_data_path, a.ccd_remark,b.cc_name
+        from sys_compulsory_course_detail a
         left join sys_compulsory_course b on a.cc_id = b.id
         <where>
+            EXISTS (select 1 from sys_compulsory_course c where c.id=a.cc_id)
             <if test="ccId != null "> and a.cc_id = #{ccId}</if>
             <if test="flag != null "> and b.cc_flag = #{flag}</if>
+            <if test="userId != null "> and b.cc_teacher = #{userId}</if>
         </where>
         order by a.cc_id,a.ccd_name
     </select>
@@ -36,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select a.id as ccId,a.cc_name as ccName from sys_compulsory_course a
         <where>
             <if test="flag != null "> and a.cc_flag = #{flag}</if>
+            <if test="userId != null "> and a.cc_teacher = #{userId}</if>
         </where>
         order by a.cc_remark
     </select>
